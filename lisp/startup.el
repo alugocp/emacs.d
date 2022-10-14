@@ -1,5 +1,4 @@
 ;; Miscellaneous variables
-(setq next-line-add-newlines nil)
 (setq backup-inhibited t) ;; Don't create file backups
 (setq auto-save-default nil) ;; Don't auto save files
 (setq create-lockfiles nil) ;; Don't create lockfiles
@@ -56,7 +55,8 @@
 (global-set-key (kbd "s-<up>") 'beginning-of-buffer) ;; CMD + up moves to beginning of file
 (global-set-key (kbd "s-<down>") 'end-of-buffer) ;; CMD + down moves to end of file
 (global-set-key (kbd "s-l") 'highlight-line) ;; CMD + L highlights the current line
-(global-set-key (kbd "<tab>") 'tab-to-tab-stop) ;; tab adds a couple spaces
+(global-set-key (kbd "<tab>") 'tab-to-tab-stop) ;; Tab adds a couple spaces
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit) ;; You can use escape key to quit command line
 
 ;; Okay we're done now
 (provide 'startup)
