@@ -1,9 +1,2 @@
-;; General setup
 (add-to-list 'load-path "~/.emacs.d/lisp")
-
-;; Set the graphical theme
-;; https://emacsfodder.github.io/emacs-theme-editor/
-(require 'basic-theme)
-(defun reapply-themes ()
-  (load-theme 'basic))
-(add-hook 'after-init-hook 'reapply-themes)
+(require 'startup)
