@@ -1,23 +1,24 @@
 ;; Miscellaneous variables
 (setq next-line-add-newlines nil)
-(setq backup-inhibited t)
-(setq auto-save-default nil)
-(setq create-lockfiles nil)
-(setq inhibit-startup-message t)
-(setq transient-mark-mode  (cons 'only transient-mark-mode))
+(setq backup-inhibited t) ;; Don't create file backups
+(setq auto-save-default nil) ;; Don't auto save files
+(setq create-lockfiles nil) ;; Don't create lockfiles
+(setq inhibit-startup-message t) ;; No startup message
+(setq transient-mark-mode  (cons 'only transient-mark-mode)) ;; Allow you to de-select by hitting an arrow key
+(setq-default tab-width 2) ;; Set tab length
+(setq initial-scratch-message ";; Hello, world!") ;; Set default buffer message
 
 ;; Modal function calls
-(global-display-line-numbers-mode)
-(tool-bar-mode -1)
-(set-frame-size (selected-frame) 150 50)
-(set-face-attribute 'default nil :height 150)
+(global-display-line-numbers-mode) ;; Show line numbers
+(tool-bar-mode -1) ;; Don't show toolbar
+(set-frame-size (selected-frame) 150 50) ;; Set initial frame size
+(set-face-attribute 'default nil :height 150) ;; Zoom the text in a little
+(global-diff-hl-mode) ;; Use fringe to show edited lines
 
 ;; Set the UI style
 ;; https://emacsfodder.github.io/emacs-theme-editor/
 (require 'billw-theme)
-(defun reapply-themes ()
-  (load-theme 'billw))
-(add-hook 'after-init-hook 'reapply-themes)
+(add-hook 'after-init-hook (lambda () (load-theme 'billw)))
 
 ;; Use the MELPA package archive
 (require 'package)
@@ -26,13 +27,19 @@
 
 ;; Install necessary packages
 (setq packages '(
-  typescript-mode
+	typescript-mode ;; TypeScript syntax highlighting
+	magit						;; Git support
+	diff-hl					;; Show line changes in fringe
 ))
 (unless package-archive-contents
   (package-refresh-contents))
 (dolist (pkg packages)
   (unless (package-installed-p pkg)
     (package-install pkg)))
+
+;; Package integration setup
+(add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
 ;; Custom key binding functions
 (defun highlight-line ()
@@ -44,11 +51,12 @@
 )
 
 ;; Key bindings
-(global-set-key (kbd "s-<left>") 'move-beginning-of-line)
-(global-set-key (kbd "s-<right>") 'move-end-of-line)
-(global-set-key (kbd "s-<up>") 'beginning-of-buffer)
-(global-set-key (kbd "s-<down>") 'end-of-buffer)
-(global-set-key (kbd "s-l") 'highlight-line)
+(global-set-key (kbd "s-<left>") 'move-beginning-of-line) ;; CMD + left moves to beginning of line
+(global-set-key (kbd "s-<right>") 'move-end-of-line) ;; CMD + right moves to end of line
+(global-set-key (kbd "s-<up>") 'beginning-of-buffer) ;; CMD + up moves to beginning of file
+(global-set-key (kbd "s-<down>") 'end-of-buffer) ;; CMD + down moves to end of file
+(global-set-key (kbd "s-l") 'highlight-line) ;; CMD + L highlights the current line
+(global-set-key (kbd "<tab>") 'tab-to-tab-stop) ;; tab adds a couple spaces
 
 ;; Okay we're done now
 (provide 'startup)
