@@ -18,5 +18,4 @@ cp init.el.template init.el
 - [x] Make line select get all highlighted lines (not just the one with the cursor)
 - [x] Allow you to jump to an arbitrary tab via `CMD + number` with consistent tab order
 - [x] CMD + T to open new empty tab (scratch buffer)
-- [ ] Make git diff lines more visible (change their colors)
-- [ ] Add file tree view (projectile)
+- [x] Add file tree view (projectile)

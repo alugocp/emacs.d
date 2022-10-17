@@ -21,6 +21,8 @@
 (global-diff-hl-mode)													;; Use fringe to show edited lines
 (delete-selection-mode)												;; Delete selected text on new character
 (global-tab-line-mode)												;; Incorporates tabs onto the editor
+(diff-hl-margin-mode)													;; Adds funny icons to the git diff margins
+(neotree-toggle)															;; Activates the file tree viewer by default
 
 ;; Set the UI style
 ;; https://emacsfodder.github.io/emacs-theme-editor/
@@ -35,6 +37,7 @@
 	typescript-mode ;; TypeScript syntax highlighting
 	magit						;; Git support
 	diff-hl					;; Show line changes in fringe
+	neotree					;; File tree viewer
 ))
 (unless package-archive-contents
   (package-refresh-contents))
