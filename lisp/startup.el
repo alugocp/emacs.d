@@ -70,6 +70,10 @@
 	(if (< n (length buffers))
 		(switch-to-buffer (nth n (mapcar #'buffer-name buffers)))
 		nil))
+(defun open-empty-buffer ()																			;; Opens a new, empty buffer
+	(interactive)
+	(switch-to-buffer (get-buffer-create "*scratch*"))
+	(lisp-interaction-mode))
 
 ;; Key bindings
 (global-set-key (kbd "s-<left>") 'move-beginning-of-line)										 ;; CMD + left moves to beginning of line
@@ -83,6 +87,7 @@
 (global-set-key (kbd "s-[") 'previous-buffer)																 ;; Go to previous tab
 (global-set-key (kbd "s-]") 'next-buffer)																		 ;; Go to next tab
 (global-set-key (kbd "s-w") 'kill-this-buffer)															 ;; Close tab
+(global-set-key (kbd "s-t") 'open-empty-buffer)															 ;; Open empty buffer
 (global-set-key (kbd "s-1") (lambda () (interactive) (global-tab-switch 0))) ;; Switch to tab 1
 (global-set-key (kbd "s-2") (lambda () (interactive) (global-tab-switch 1))) ;; Switch to tab 2
 (global-set-key (kbd "s-3") (lambda () (interactive) (global-tab-switch 2))) ;; Switch to tab 3
