@@ -10,8 +10,9 @@ cp init.el.template init.el
 ```
 
 ## Todo
-- [ ] Delete selected text if you hit another non-navigation key
-- [ ] Make git diff lines more visible (change their colors)
-- [ ] Add file tree view and multiple tabs
+- [x] Delete selected text if you hit another non-navigation key
+- [x] Add multiple tabs
+- [x] Figure out running a terminal shell in this thing
 - [ ] Make line select select all highlighted lines (not just the one with the cursor)
-- [ ] Figure out running a terminal shell in this thing
+- [ ] Make git diff lines more visible (change their colors)
+- [ ] Add file tree view (projectile)

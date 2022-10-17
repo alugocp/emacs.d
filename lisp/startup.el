@@ -13,6 +13,8 @@
 (set-frame-size (selected-frame) 150 50) ;; Set initial frame size
 (set-face-attribute 'default nil :height 150) ;; Zoom the text in a little
 (global-diff-hl-mode) ;; Use fringe to show edited lines
+(delete-selection-mode) ;; Delete selected text on new character
+(global-tab-line-mode) ;; Incorporates tabs onto the editor
 
 ;; Set the UI style
 ;; https://emacsfodder.github.io/emacs-theme-editor/
@@ -57,6 +59,10 @@
 (global-set-key (kbd "s-l") 'highlight-line) ;; CMD + L highlights the current line
 (global-set-key (kbd "<tab>") 'tab-to-tab-stop) ;; Tab adds a couple spaces
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit) ;; You can use escape key to quit command line
+(global-set-key (kbd "s-<return>") 'eshell) ;; CMD + enter opens the Emacs shell
+(global-set-key (kbd "s-[") 'previous-buffer) ;; Go to previous tab
+(global-set-key (kbd "s-]") 'next-buffer) ;; Go to next tab
+(global-set-key (kbd "s-w") 'kill-this-buffer) ;; Close tab
 
 ;; Okay we're done now
 (provide 'startup)
