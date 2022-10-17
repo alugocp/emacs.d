@@ -13,6 +13,9 @@ cp init.el.template init.el
 - [x] Delete selected text if you hit another non-navigation key
 - [x] Add multiple tabs
 - [x] Figure out running a terminal shell in this thing
-- [ ] Make line select select all highlighted lines (not just the one with the cursor)
+- [x] Copy command should not deselect text
+- [x] Implement horizontal scroll and remove line wrap
+- [ ] Allow you to jump to an arbitrary tab via `CMD + number`
+- [ ] Make line select get all highlighted lines (not just the one with the cursor)
 - [ ] Make git diff lines more visible (change their colors)
 - [ ] Add file tree view (projectile)
