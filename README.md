@@ -10,12 +10,15 @@ cp init.el.template init.el
 ```
 
 ## Todo
-- [x] Delete selected text if you hit another non-navigation key
-- [x] Add multiple tabs
-- [x] Figure out running a terminal shell in this thing
-- [x] Copy command should not deselect text
-- [x] Implement horizontal scroll and remove line wrap
-- [x] Make line select get all highlighted lines (not just the one with the cursor)
-- [x] Allow you to jump to an arbitrary tab via `CMD + number` with consistent tab order
-- [x] CMD + T to open new empty tab (scratch buffer)
-- [x] Add file tree view (projectile)
+- [ ] Figure out how to indent by only tab-width spaces
+- [ ] Don't have scratch buffer when opening files
+- [ ] Run as daemon when command is invoked
+- [ ] CMD + left should stop at preceeding whitespace
+- [ ] Leverage `(indent-region)` for CMD + ] (remap tab switching to avoid collision)
+- [ ] Find some inverse of `(indent-region)` and map it to CMD + [
+- [ ] Backspace should take spaces 2 at a time (like real tabs)
+- [ ] Find a good plugin for search + replace (should have regex and case sensitivity support, as well as project-wide search)
+- [ ] CTRL + left or right should skip to the next word, but non-alphanumeric characters count as separate words from each other as long as they are different characters
+- [ ] Pressing an arrow from a region skips to that end of the region (not where the cursor happens to be)
+- [ ] Figure out how to reorient the project viewer to a new root directory
+- [ ] Make git gutter colors more vibrant

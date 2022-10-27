@@ -11,6 +11,7 @@
 (setq mouse-wheel-tilt-scroll t)                             ;; Allows you to scroll horizontally
 (setq mouse-wheel-flip-direction 1)                          ;; Sets my preferred mouse pad scrolling direction
 (setq-default truncate-lines 1)                              ;; Won't wrap long lines
+(setq-default electric-indent-inhibit t)                     ;; Don't indent current line on RET
 (setq-default tab-line-tabs-function                         ;; Keeps our tab order consistent
   (lambda () (sort (tab-line-tabs-window-buffers)
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
@@ -25,7 +26,7 @@
 (global-tab-line-mode)                        ;; Incorporates tabs onto the editor
 (diff-hl-margin-mode)                         ;; Adds funny icons to the git diff margins
 (neotree-toggle)                              ;; Activates the file tree viewer by default
-(global-whitespace-mode 1)
+(global-whitespace-mode 1)                    ;; Displays desired whitespace characters
 
 ;; Set the UI style
 ;; https://emacsfodder.github.io/emacs-theme-editor/
