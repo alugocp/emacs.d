@@ -10,9 +10,9 @@ cp init.el.template init.el
 ```
 
 ## Todo
-- [ ] Figure out how to indent by only tab-width spaces
-- [ ] Don't have scratch buffer when opening files
-- [ ] Run as daemon when command is invoked
+- [x] Figure out how to indent by only tab-width spaces (at least for `typescript-mode`)
+- [x] Make git gutter colors more vibrant
+- [x] Don't have scratch buffer when opening files
 - [ ] CMD + left should stop at preceeding whitespace
 - [ ] Leverage `(indent-region)` for CMD + ] (remap tab switching to avoid collision)
 - [ ] Find some inverse of `(indent-region)` and map it to CMD + [
@@ -21,4 +21,3 @@ cp init.el.template init.el
 - [ ] CTRL + left or right should skip to the next word, but non-alphanumeric characters count as separate words from each other as long as they are different characters
 - [ ] Pressing an arrow from a region skips to that end of the region (not where the cursor happens to be)
 - [ ] Figure out how to reorient the project viewer to a new root directory
-- [ ] Make git gutter colors more vibrant

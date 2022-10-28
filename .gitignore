@@ -1,6 +1,10 @@
+# Basic things
 /auto-save-list
 /transient
 /init.el
 /eshell
 /*.eld
 /elpa
+
+# Custom library changes
+!elpa/diff-hl-[0-9]*.[0-9]*/diff-hl.el

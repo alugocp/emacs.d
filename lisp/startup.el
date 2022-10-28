@@ -16,6 +16,10 @@
   (lambda () (sort (tab-line-tabs-window-buffers)
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
 
+;; Language indent levels
+(setq typescript-indent-level 2)
+(setq js-indent-level 2)
+
 ;; Modal function calls
 (global-display-line-numbers-mode)            ;; Show line numbers
 (tool-bar-mode -1)                            ;; Don't show toolbar
@@ -24,7 +28,6 @@
 (global-diff-hl-mode)                         ;; Use fringe to show edited lines
 (delete-selection-mode)                       ;; Delete selected text on new character
 (global-tab-line-mode)                        ;; Incorporates tabs onto the editor
-(diff-hl-margin-mode)                         ;; Adds funny icons to the git diff margins
 (neotree-toggle)                              ;; Activates the file tree viewer by default
 (global-whitespace-mode 1)                    ;; Displays desired whitespace characters
 
@@ -53,6 +56,17 @@
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
+;; Miscellaneous hooks
+(add-hook 'emacs-startup-hook (lambda ()
+      (when (get-buffer "*scratch*")
+        (progn
+          (kill-buffer "*scratch*")
+          (delete-window))
+          (when (member "*Messages*" (mapcar (lambda (a) (buffer-name a)) (funcall tab-line-tabs-function)))
+              (progn
+                  (open-empty-buffer)
+                  (kill-buffer "*Messages*"))))))
+
 ;; Custom key binding functions and advice
 (defun highlight-line ()                                        ;; Line select function
   "Select the current line"
@@ -80,6 +94,7 @@
 (defun open-empty-buffer ()                                     ;; Opens a new, empty buffer
   (interactive)
   (switch-to-buffer (get-buffer-create "*scratch*"))
+  (insert initial-scratch-message)
   (lisp-interaction-mode))
 
 ;; Key bindings
