@@ -96,6 +96,18 @@
   (switch-to-buffer (get-buffer-create "*scratch*"))
   (insert initial-scratch-message)
   (lisp-interaction-mode))
+(defun my/indent-region ()
+  (interactive)
+  (beginning-of-line)
+  (dotimes (_ tab-width) (insert " ")))
+(defun my/outdent-region ()
+  (interactive)
+  (beginning-of-line)
+  (dotimes (_ tab-width) (if (string= " " (string (following-char))) (delete-char 1))))
+(defun my/kill-emacs ()
+  (interactive)
+  (save-some-buffers nil t)
+  (kill-emacs))
 
 ;; Key bindings
 (global-set-key (kbd "s-<left>") 'move-beginning-of-line)                    ;; CMD + left moves to beginning of line
@@ -106,9 +118,12 @@
 (global-set-key (kbd "<tab>") 'tab-to-tab-stop)                              ;; Tab adds a couple spaces
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)                      ;; You can use escape key to quit command line
 (global-set-key (kbd "s-<return>") 'eshell)                                  ;; CMD + enter opens the Emacs shell
-(global-set-key (kbd "s-[") 'previous-buffer)                                ;; Go to previous tab
-(global-set-key (kbd "s-]") 'next-buffer)                                    ;; Go to next tab
+(global-set-key (kbd "s-<") 'previous-buffer)                                ;; Go to previous tab
+(global-set-key (kbd "s->") 'next-buffer)                                    ;; Go to next tab
+(global-set-key (kbd "s-]") 'my/indent-region)                               ;; Indents the highlighted region
+(global-set-key (kbd "s-[") 'my/outdent-region)                              ;; Outdents the highlighted region
 (global-set-key (kbd "s-w") 'kill-this-buffer)                               ;; Close tab
+(global-set-key (kbd "s-q") 'my/kill-emacs)                                  ;; Just quit Emacs
 (global-set-key (kbd "s-t") 'open-empty-buffer)                              ;; Open empty buffer
 (global-set-key (kbd "s-1") (lambda () (interactive) (global-tab-switch 0))) ;; Switch to tab 1
 (global-set-key (kbd "s-2") (lambda () (interactive) (global-tab-switch 1))) ;; Switch to tab 2
