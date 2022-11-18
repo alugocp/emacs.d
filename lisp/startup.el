@@ -107,23 +107,66 @@
         (beginning-of-line)
         (dotimes (_ tab-width) (insert " "))
         (setq end (+ end tab-width))
-        (next-line)
-    ))
+        (end-of-line)
+        (if (and (= (point) end) (= (point-max) end)) (setq end (- end 1)))
+        (if (< (point) (point-max)) (forward-char))))
   (set-mark start)
   (goto-char end)
   (setq deactivate-mark nil)
-  (activate-mark))
+  (activate-mark)
+  (setq transient-mark-mode  (cons 'only transient-mark-mode)))
 (defun my/outdent-region ()
   (interactive)
+  ;; (dotimes (_ tab-width) (if (string= " " (string (following-char))) (delete-char 1))))
+  (setq start (if (use-region-p) (region-beginning) (point)))
+  (setq end (if (use-region-p) (region-end) (point)))
+  (goto-char start)
   (beginning-of-line)
-  (dotimes (_ tab-width) (if (string= " " (string (following-char))) (delete-char 1))))
+  (dotimes (_ tab-width) (if (string= " " (string (following-char))) (progn (setq start (- start 1)) (forward-char))))
+  (while (<= (point) end)
+    (progn
+        (beginning-of-line)
+        (dotimes (_ tab-width) 
+            (if (string= " " (string (following-char))) (progn
+                (delete-char 1)
+                (setq end (- end 1)))))
+        (end-of-line)
+        (if (and (= (point) end) (= (point-max) end)) (setq end (- end 1)))
+        (if (< (point) (point-max)) (forward-char))))
+  (set-mark start)
+  (goto-char end)
+  (setq deactivate-mark nil)
+  (activate-mark)
+  (setq transient-mark-mode  (cons 'only transient-mark-mode)))
 (defun my/kill-emacs ()
   (interactive)
   (save-some-buffers nil t)
   (kill-emacs))
+(defun my/move-beginning-of-line ()
+    (interactive)
+    (setq start (point))
+    (set-mark start)
+    (beginning-of-line)
+    (if (not (= start (point))) (progn
+        (while (string= " " (string (following-char))) (forward-char))
+        (if (= (point) start) (beginning-of-line))))
+    (setq transient-mark-mode  (cons 'only transient-mark-mode)))
+(defun my/delete-backward-char ()
+    (interactive)
+    (if (and (>= (point) (+ (point-min) 2)) (string= " " (string (preceding-char))))
+        (progn
+            (backward-char)
+            (if (string= " " (string (preceding-char)))
+                (progn
+                    (forward-char)
+                    (delete-backward-char 2))
+                (progn
+                    (forward-char)
+                    (delete-backward-char 1))))
+        (delete-backward-char 1)))
 
 ;; Key bindings
-(global-set-key (kbd "s-<left>") 'move-beginning-of-line)                    ;; CMD + left moves to beginning of line
+(global-set-key (kbd "s-<left>") 'my/move-beginning-of-line)                 ;; CMD + left moves to beginning of line
 (global-set-key (kbd "s-<right>") 'move-end-of-line)                         ;; CMD + right moves to end of line
 (global-set-key (kbd "s-<up>") 'beginning-of-buffer)                         ;; CMD + up moves to beginning of file
 (global-set-key (kbd "s-<down>") 'end-of-buffer)                             ;; CMD + down moves to end of file
@@ -150,6 +193,7 @@
 (global-set-key (kbd "s-7") (lambda () (interactive) (global-tab-switch 6))) ;; Switch to tab 7
 (global-set-key (kbd "s-8") (lambda () (interactive) (global-tab-switch 7))) ;; Switch to tab 8
 (global-set-key (kbd "s-9") (lambda () (interactive) (global-tab-switch 8))) ;; Switch to tab 9
+(global-set-key (kbd "<backspace>") 'my/delete-backward-char)
 
 ;; Okay we're done now
 (provide 'startup)
