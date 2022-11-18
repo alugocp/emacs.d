@@ -98,8 +98,21 @@
   (lisp-interaction-mode))
 (defun my/indent-region ()
   (interactive)
-  (beginning-of-line)
-  (dotimes (_ tab-width) (insert " ")))
+  (setq start (if (use-region-p) (region-beginning) (point)))
+  (setq end (if (use-region-p) (region-end) (point)))
+  (goto-char start)
+  (setq start (+ start tab-width))
+  (while (<= (point) end)
+    (progn
+        (beginning-of-line)
+        (dotimes (_ tab-width) (insert " "))
+        (setq end (+ end tab-width))
+        (next-line)
+    ))
+  (set-mark start)
+  (goto-char end)
+  (setq deactivate-mark nil)
+  (activate-mark))
 (defun my/outdent-region ()
   (interactive)
   (beginning-of-line)
@@ -124,6 +137,9 @@
 (global-set-key (kbd "s-[") 'my/outdent-region)                              ;; Outdents the highlighted region
 (global-set-key (kbd "s-w") 'kill-this-buffer)                               ;; Close tab
 (global-set-key (kbd "s-q") 'my/kill-emacs)                                  ;; Just quit Emacs
+(global-set-key (kbd "s-s") 'save-buffer)                                    ;; Save current buffer
+(global-set-key (kbd "s-S") 'ns-write-file-using-panel)                      ;; Save as
+(global-set-key (kbd "s-o") 'ns-open-file-using-panel)                       ;; Open file
 (global-set-key (kbd "s-t") 'open-empty-buffer)                              ;; Open empty buffer
 (global-set-key (kbd "s-1") (lambda () (interactive) (global-tab-switch 0))) ;; Switch to tab 1
 (global-set-key (kbd "s-2") (lambda () (interactive) (global-tab-switch 1))) ;; Switch to tab 2
