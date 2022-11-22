@@ -17,8 +17,8 @@
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
 
 ;; Language indent levels
-(setq typescript-indent-level 2)
-(setq js-indent-level 2)
+(setq typescript-indent-level 2) ;; TypeScript
+(setq js-indent-level 2)         ;; JavaScript
 
 ;; Modal function calls
 (global-display-line-numbers-mode)            ;; Show line numbers
@@ -143,14 +143,13 @@
   (interactive)
   (save-some-buffers nil t)
   (kill-emacs))
-(defun my/move-beginning-of-line ()
+(defun my/move-beginning-of-line (highlight)
     (interactive)
+    (if (and highlight (not (region-active-p))) (set-mark (point)))
     (setq start (point))
-    (set-mark start)
     (beginning-of-line)
-    (if (not (= start (point))) (progn
-        (while (string= " " (string (following-char))) (forward-char))
-        (if (= (point) start) (beginning-of-line))))
+    (skip-chars-forward "\t ")
+    (if (or (= start (point)) (= start (line-beginning-position))) (beginning-of-line))
     (setq transient-mark-mode (cons 'only transient-mark-mode)))
 (defun my/delete-backward-char ()
     (interactive)
@@ -167,37 +166,38 @@
         (delete-backward-char 1)))
 
 ;; Key bindings
-(global-set-key (kbd "s-<left>") 'my/move-beginning-of-line)                 ;; CMD + left moves to beginning of line
-(global-set-key (kbd "s-<right>") 'move-end-of-line)                         ;; CMD + right moves to end of line
-(global-set-key (kbd "s-<up>") 'beginning-of-buffer)                         ;; CMD + up moves to beginning of file
-(global-set-key (kbd "s-<down>") 'end-of-buffer)                             ;; CMD + down moves to end of file
-(global-set-key (kbd "s-l") 'highlight-line)                                 ;; CMD + L highlights the current line
-(global-set-key (kbd "<tab>") 'tab-to-tab-stop)                              ;; Tab adds a couple spaces
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)                      ;; You can use escape key to quit command line
-(global-set-key (kbd "s-<return>") 'eshell)                                  ;; CMD + enter opens the Emacs shell
-(global-set-key (kbd "s-<") 'previous-buffer)                                ;; Go to previous tab
-(global-set-key (kbd "s->") 'next-buffer)                                    ;; Go to next tab
-(global-set-key (kbd "s-]") 'my/indent-region)                               ;; Indents the highlighted region
-(global-set-key (kbd "s-[") 'my/outdent-region)                              ;; Outdents the highlighted region
-(global-set-key (kbd "s-f") 'fuzzy-finder)                                   ;; Opens the fuzzy finder
-(global-set-key (kbd "s-w") 'kill-this-buffer)                               ;; Close tab
-(global-set-key (kbd "s-q") 'my/kill-emacs)                                  ;; Just quit Emacs
-(global-set-key (kbd "s-s") 'save-buffer)                                    ;; Save current buffer
-(global-set-key (kbd "s-S") 'ns-write-file-using-panel)                      ;; Save as
-(global-set-key (kbd "s-o") 'ns-open-file-using-panel)                       ;; Open file
-(global-set-key (kbd "s-t") 'open-empty-buffer)                              ;; Open empty buffer
-(global-set-key (kbd "s-1") (lambda () (interactive) (global-tab-switch 0))) ;; Switch to tab 1
-(global-set-key (kbd "s-2") (lambda () (interactive) (global-tab-switch 1))) ;; Switch to tab 2
-(global-set-key (kbd "s-3") (lambda () (interactive) (global-tab-switch 2))) ;; Switch to tab 3
-(global-set-key (kbd "s-4") (lambda () (interactive) (global-tab-switch 3))) ;; Switch to tab 4
-(global-set-key (kbd "s-5") (lambda () (interactive) (global-tab-switch 4))) ;; Switch to tab 5
-(global-set-key (kbd "s-6") (lambda () (interactive) (global-tab-switch 5))) ;; Switch to tab 6
-(global-set-key (kbd "s-7") (lambda () (interactive) (global-tab-switch 6))) ;; Switch to tab 7
-(global-set-key (kbd "s-8") (lambda () (interactive) (global-tab-switch 7))) ;; Switch to tab 8
-(global-set-key (kbd "s-9") (lambda () (interactive) (global-tab-switch 8))) ;; Switch to tab 9
-(global-set-key (kbd "<backspace>") 'my/delete-backward-char)                ;; Overrides backspace to handle space tabs
-(global-set-key (kbd "s-|") 'neotree-toggle)                                 ;; Toggles the project tree viewer
-(global-set-key (kbd "s-/") 'neotree-dir)                                    ;; Changes the root directory of project tree viewer
+(global-set-key (kbd "s-S-<left>") (lambda () (interactive) (my/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
+(global-set-key (kbd "s-<left>") (lambda () (interactive) (my/move-beginning-of-line nil))) ;; CMD + left moves to beginning of line
+(global-set-key (kbd "s-<right>") 'move-end-of-line)                                        ;; CMD + right moves to end of line
+(global-set-key (kbd "s-<up>") 'beginning-of-buffer)                                        ;; CMD + up moves to beginning of file
+(global-set-key (kbd "s-<down>") 'end-of-buffer)                                            ;; CMD + down moves to end of file
+(global-set-key (kbd "s-l") 'highlight-line)                                                ;; CMD + L highlights the current line
+(global-set-key (kbd "<tab>") 'tab-to-tab-stop)                                             ;; Tab adds a couple spaces
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)                                     ;; You can use escape key to quit command line
+(global-set-key (kbd "s-<return>") 'eshell)                                                 ;; CMD + enter opens the Emacs shell
+(global-set-key (kbd "s-<") 'previous-buffer)                                               ;; Go to previous tab
+(global-set-key (kbd "s->") 'next-buffer)                                                   ;; Go to next tab
+(global-set-key (kbd "s-]") 'my/indent-region)                                              ;; Indents the highlighted region
+(global-set-key (kbd "s-[") 'my/outdent-region)                                             ;; Outdents the highlighted region
+(global-set-key (kbd "s-f") 'fuzzy-finder)                                                  ;; Opens the fuzzy finder
+(global-set-key (kbd "s-w") 'kill-this-buffer)                                              ;; Close tab
+(global-set-key (kbd "s-q") 'my/kill-emacs)                                                 ;; Just quit Emacs
+(global-set-key (kbd "s-s") 'save-buffer)                                                   ;; Save current buffer
+(global-set-key (kbd "s-S") 'ns-write-file-using-panel)                                     ;; Save as
+(global-set-key (kbd "s-o") 'ns-open-file-using-panel)                                      ;; Open file
+(global-set-key (kbd "s-t") 'open-empty-buffer)                                             ;; Open empty buffer
+(global-set-key (kbd "s-1") (lambda () (interactive) (global-tab-switch 0)))                ;; Switch to tab 1
+(global-set-key (kbd "s-2") (lambda () (interactive) (global-tab-switch 1)))                ;; Switch to tab 2
+(global-set-key (kbd "s-3") (lambda () (interactive) (global-tab-switch 2)))                ;; Switch to tab 3
+(global-set-key (kbd "s-4") (lambda () (interactive) (global-tab-switch 3)))                ;; Switch to tab 4
+(global-set-key (kbd "s-5") (lambda () (interactive) (global-tab-switch 4)))                ;; Switch to tab 5
+(global-set-key (kbd "s-6") (lambda () (interactive) (global-tab-switch 5)))                ;; Switch to tab 6
+(global-set-key (kbd "s-7") (lambda () (interactive) (global-tab-switch 6)))                ;; Switch to tab 7
+(global-set-key (kbd "s-8") (lambda () (interactive) (global-tab-switch 7)))                ;; Switch to tab 8
+(global-set-key (kbd "s-9") (lambda () (interactive) (global-tab-switch 8)))                ;; Switch to tab 9
+(global-set-key (kbd "<backspace>") 'my/delete-backward-char)                               ;; Overrides backspace to handle space tabs
+(global-set-key (kbd "s-|") 'neotree-toggle)                                                ;; Toggles the project tree viewer
+(global-set-key (kbd "s-/") 'neotree-dir)                                                   ;; Changes the root directory of project tree viewer
 
 ;; Okay we're done now
 (provide 'startup)
