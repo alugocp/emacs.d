@@ -1,3 +1,4 @@
+
 ;; Miscellaneous variables
 (setq backup-inhibited t)                                    ;; Don't create file backups
 (setq auto-save-default nil)                                 ;; Don't auto save files
@@ -5,7 +6,6 @@
 (setq inhibit-startup-message t)                             ;; No startup message
 (setq transient-mark-mode (cons 'only transient-mark-mode))  ;; Allows you to de-select by hitting an arrow key
 (setq-default indent-tabs-mode nil)                          ;; Don't use tabs for indentation
-(setq-default tab-width 2)                                   ;; Set tab length
 (setq whitespace-style '(tabs tab-mark))                     ;; Displays a mark for tab characters
 (setq initial-scratch-message ";; Hello, world!")            ;; Set default buffer message
 (setq mouse-wheel-tilt-scroll t)                             ;; Allows you to scroll horizontally
@@ -16,9 +16,12 @@
   (lambda () (sort (tab-line-tabs-window-buffers)
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
 
-;; Language indent levels
-(setq typescript-indent-level 2) ;; TypeScript
-(setq js-indent-level 2)         ;; JavaScript
+;; Set indentation width
+(defun my/set-indentation-width (n)
+    (setq-default tab-width n)
+    (setq typescript-indent-level n)
+    (setq js-indent-level n))
+(my/set-indentation-width 2)
 
 ;; Modal function calls
 (global-display-line-numbers-mode)            ;; Show line numbers
@@ -153,17 +156,20 @@
     (setq transient-mark-mode (cons 'only transient-mark-mode)))
 (defun my/delete-backward-char ()
     (interactive)
-    (if (and (>= (point) (+ (point-min) 2)) (string= " " (string (preceding-char))))
+    (if (and (>= (point) (+ (point-min) tab-width)) (string= " " (string (preceding-char))))
         (progn
             (backward-char)
             (if (string= " " (string (preceding-char)))
                 (progn
                     (forward-char)
-                    (delete-backward-char 2))
+                    (delete-backward-char tab-width))
                 (progn
                     (forward-char)
                     (delete-backward-char 1))))
         (delete-backward-char 1)))
+(defun my/set-indent-level ()
+    (interactive)
+    (my/set-indentation-width (string-to-number (read-key-sequence "Indent by"))))
 
 ;; Key bindings
 (global-set-key (kbd "s-S-<left>") (lambda () (interactive) (my/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
@@ -196,6 +202,7 @@
 (global-set-key (kbd "s-8") (lambda () (interactive) (global-tab-switch 7)))                ;; Switch to tab 8
 (global-set-key (kbd "s-9") (lambda () (interactive) (global-tab-switch 8)))                ;; Switch to tab 9
 (global-set-key (kbd "<backspace>") 'my/delete-backward-char)                               ;; Overrides backspace to handle space tabs
+(global-set-key (kbd "s-i") 'my/set-indent-level)                                           ;; Sets indentation width
 (global-set-key (kbd "s-|") 'neotree-toggle)                                                ;; Toggles the project tree viewer
 (global-set-key (kbd "s-/") 'neotree-dir)                                                   ;; Changes the root directory of project tree viewer
 
