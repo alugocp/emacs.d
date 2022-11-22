@@ -19,6 +19,5 @@ cp init.el.template init.el
 - [x] CMD + left should stop at preceding whitespace
 - [x] Backspace should take spaces 2 at a time (like real tabs)
 - [x] Find a good plugin for search + replace (should have regex and case sensitivity support, as well as project-wide search)
+- [x] Figure out how to reorient the project viewer to a new root directory
 - [ ] CTRL + left or right should skip to the next word, but non-alphanumeric characters count as separate words from each other as long as they are different characters
-- [ ] Pressing an arrow while selecting a region unselects the region (not move and unselect)
-- [ ] Figure out how to reorient the project viewer to a new root directory

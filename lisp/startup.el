@@ -195,7 +195,9 @@
 (global-set-key (kbd "s-7") (lambda () (interactive) (global-tab-switch 6))) ;; Switch to tab 7
 (global-set-key (kbd "s-8") (lambda () (interactive) (global-tab-switch 7))) ;; Switch to tab 8
 (global-set-key (kbd "s-9") (lambda () (interactive) (global-tab-switch 8))) ;; Switch to tab 9
-(global-set-key (kbd "<backspace>") 'my/delete-backward-char)
+(global-set-key (kbd "<backspace>") 'my/delete-backward-char)                ;; Overrides backspace to handle space tabs
+(global-set-key (kbd "s-|") 'neotree-toggle)                                 ;; Toggles the project tree viewer
+(global-set-key (kbd "s-r") 'neotree-dir)                                    ;; Changes the root directory of project tree viewer
 
 ;; Okay we're done now
 (provide 'startup)
