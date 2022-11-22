@@ -9,6 +9,9 @@ Run the following command to make this starter kit usable:
 cp init.el.template init.el
 ```
 
+You will also need to install the following command-line tools:
+- [fzf](https://github.com/junegunn/fzf)
+
 ## Todo
 - [x] Figure out how to indent by only tab-width spaces (at least for `typescript-mode`)
 - [x] Make git gutter colors more vibrant
@@ -21,3 +24,4 @@ cp init.el.template init.el
 - [x] Find a good plugin for search + replace (should have regex and case sensitivity support, as well as project-wide search)
 - [x] Figure out how to reorient the project viewer to a new root directory
 - [ ] CTRL + left or right should skip to the next word, but non-alphanumeric characters count as separate words from each other as long as they are different characters
+- [ ] Rebrand as my own Emacs configuration
