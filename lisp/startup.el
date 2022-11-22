@@ -3,7 +3,7 @@
 (setq auto-save-default nil)                                 ;; Don't auto save files
 (setq create-lockfiles nil)                                  ;; Don't create lockfiles
 (setq inhibit-startup-message t)                             ;; No startup message
-(setq transient-mark-mode  (cons 'only transient-mark-mode)) ;; Allows you to de-select by hitting an arrow key
+(setq transient-mark-mode (cons 'only transient-mark-mode))  ;; Allows you to de-select by hitting an arrow key
 (setq-default indent-tabs-mode nil)                          ;; Don't use tabs for indentation
 (setq-default tab-width 2)                                   ;; Set tab length
 (setq whitespace-style '(tabs tab-mark))                     ;; Displays a mark for tab characters
@@ -45,6 +45,7 @@
   magit           ;; Git support
   diff-hl         ;; Show line changes in fringe
   neotree         ;; File tree viewer
+  fuzzy-finder    ;; Fuzzy finder package
 ))
 (unless package-archive-contents
   (package-refresh-contents))
@@ -114,7 +115,7 @@
   (goto-char end)
   (setq deactivate-mark nil)
   (activate-mark)
-  (setq transient-mark-mode  (cons 'only transient-mark-mode)))
+  (setq transient-mark-mode (cons 'only transient-mark-mode)))
 (defun my/outdent-region ()
   (interactive)
   ;; (dotimes (_ tab-width) (if (string= " " (string (following-char))) (delete-char 1))))
@@ -126,7 +127,7 @@
   (while (<= (point) end)
     (progn
         (beginning-of-line)
-        (dotimes (_ tab-width) 
+        (dotimes (_ tab-width)
             (if (string= " " (string (following-char))) (progn
                 (delete-char 1)
                 (setq end (- end 1)))))
@@ -137,7 +138,7 @@
   (goto-char end)
   (setq deactivate-mark nil)
   (activate-mark)
-  (setq transient-mark-mode  (cons 'only transient-mark-mode)))
+  (setq transient-mark-mode (cons 'only transient-mark-mode)))
 (defun my/kill-emacs ()
   (interactive)
   (save-some-buffers nil t)
@@ -150,7 +151,7 @@
     (if (not (= start (point))) (progn
         (while (string= " " (string (following-char))) (forward-char))
         (if (= (point) start) (beginning-of-line))))
-    (setq transient-mark-mode  (cons 'only transient-mark-mode)))
+    (setq transient-mark-mode (cons 'only transient-mark-mode)))
 (defun my/delete-backward-char ()
     (interactive)
     (if (and (>= (point) (+ (point-min) 2)) (string= " " (string (preceding-char))))
@@ -178,6 +179,7 @@
 (global-set-key (kbd "s->") 'next-buffer)                                    ;; Go to next tab
 (global-set-key (kbd "s-]") 'my/indent-region)                               ;; Indents the highlighted region
 (global-set-key (kbd "s-[") 'my/outdent-region)                              ;; Outdents the highlighted region
+(global-set-key (kbd "s-f") 'fuzzy-finder)                                   ;; Opens the fuzzy finder
 (global-set-key (kbd "s-w") 'kill-this-buffer)                               ;; Close tab
 (global-set-key (kbd "s-q") 'my/kill-emacs)                                  ;; Just quit Emacs
 (global-set-key (kbd "s-s") 'save-buffer)                                    ;; Save current buffer
