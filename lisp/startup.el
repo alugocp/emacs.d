@@ -1,4 +1,16 @@
 
+;; Customizable values
+(defcustom initial-tab-width 2
+  "The initial tab width to set when opening this editor")
+(defcustom initial-screen-width 150
+  "The initial screen width to set when opening this editor")
+(defcustom initial-screen-height 50
+  "The initial screen height to set when opening this editor")
+(defcustom command-key "C"
+  "The key to be used in place of CMD for keybindings")
+(defcustom indentation-variables '()
+  "A list of indentation variables to keep in sync")
+
 ;; Miscellaneous variables
 (setq backup-inhibited t)                                    ;; Don't create file backups
 (setq auto-save-default nil)                                 ;; Don't auto save files
@@ -18,24 +30,19 @@
 
 ;; Set indentation width
 (defun my/set-indentation-width (n)
-    (setq-default tab-width n)
-    (setq typescript-indent-level n)
-    (setq js-indent-level n))
-(my/set-indentation-width 2)
+  (dolist (variable indentation-variables) (set-default variable n)))
+(my/set-indentation-width initial-tab-width)
 
 ;; Modal function calls
-(global-display-line-numbers-mode)            ;; Show line numbers
-(tool-bar-mode -1)                            ;; Don't show toolbar
-(set-frame-size (selected-frame) 150 50)      ;; Set initial frame size
-(set-face-attribute 'default nil :height 150) ;; Zoom the text in a little
-(global-diff-hl-mode)                         ;; Use fringe to show edited lines
-(delete-selection-mode)                       ;; Delete selected text on new character
-(global-tab-line-mode)                        ;; Incorporates tabs onto the editor
-(neotree-toggle)                              ;; Activates the file tree viewer by default
-(global-whitespace-mode 1)                    ;; Displays desired whitespace characters
+(set-frame-size (selected-frame) initial-screen-width initial-screen-height) ;; Set initial frame size
+(global-display-line-numbers-mode)                                           ;; Show line numbers
+(set-face-attribute 'default nil :height 150)                                ;; Zoom the text in a little
+(delete-selection-mode)                                                      ;; Delete selected text on new character
+(global-tab-line-mode)                                                       ;; Incorporates tabs onto the editor
+(global-whitespace-mode 1)                                                   ;; Displays desired whitespace characters
+(tool-bar-mode -1)                                                           ;; Don't show toolbar
 
 ;; Set the UI style
-;; https://emacsfodder.github.io/emacs-theme-editor/
 (require 'billw-theme)
 (add-hook 'after-init-hook (lambda () (load-theme 'billw)))
 
@@ -45,10 +52,10 @@
 (package-initialize)
 (setq packages '(
   typescript-mode ;; TypeScript syntax highlighting
-  magit           ;; Git support
+  fuzzy-finder    ;; Fuzzy finder package
   diff-hl         ;; Show line changes in fringe
   neotree         ;; File tree viewer
-  fuzzy-finder    ;; Fuzzy finder package
+  magit           ;; Git support
 ))
 (unless package-archive-contents
   (package-refresh-contents))
@@ -59,6 +66,8 @@
 ;; Package integration setup
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+(global-diff-hl-mode)                                           ;; Use fringe to show edited lines
+(neotree-toggle)                                                ;; Activates the file tree viewer by default
 
 ;; Miscellaneous hooks
 (add-hook 'emacs-startup-hook (lambda ()
@@ -121,7 +130,6 @@
   (setq transient-mark-mode (cons 'only transient-mark-mode)))
 (defun my/outdent-region ()
   (interactive)
-  ;; (dotimes (_ tab-width) (if (string= " " (string (following-char))) (delete-char 1))))
   (setq start (if (use-region-p) (region-beginning) (point)))
   (setq end (if (use-region-p) (region-end) (point)))
   (goto-char start)
@@ -170,41 +178,46 @@
 (defun my/set-indent-level ()
     (interactive)
     (my/set-indentation-width (string-to-number (read-key-sequence "Indent by"))))
+(defun my/kbd (shortcut)
+  (if (string= "s-" (substring shortcut 0 2))
+    (kbd (concat command-key (substring shortcut 1)))
+    (kbd shortcut)))
 
 ;; Key bindings
-(global-set-key (kbd "s-S-<left>") (lambda () (interactive) (my/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
-(global-set-key (kbd "s-<left>") (lambda () (interactive) (my/move-beginning-of-line nil))) ;; CMD + left moves to beginning of line
-(global-set-key (kbd "s-<right>") 'move-end-of-line)                                        ;; CMD + right moves to end of line
-(global-set-key (kbd "s-<up>") 'beginning-of-buffer)                                        ;; CMD + up moves to beginning of file
-(global-set-key (kbd "s-<down>") 'end-of-buffer)                                            ;; CMD + down moves to end of file
-(global-set-key (kbd "s-l") 'highlight-line)                                                ;; CMD + L highlights the current line
-(global-set-key (kbd "<tab>") 'tab-to-tab-stop)                                             ;; Tab adds a couple spaces
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)                                     ;; You can use escape key to quit command line
-(global-set-key (kbd "s-<return>") 'eshell)                                                 ;; CMD + enter opens the Emacs shell
-(global-set-key (kbd "s-<") 'previous-buffer)                                               ;; Go to previous tab
-(global-set-key (kbd "s->") 'next-buffer)                                                   ;; Go to next tab
-(global-set-key (kbd "s-]") 'my/indent-region)                                              ;; Indents the highlighted region
-(global-set-key (kbd "s-[") 'my/outdent-region)                                             ;; Outdents the highlighted region
-(global-set-key (kbd "s-f") 'fuzzy-finder)                                                  ;; Opens the fuzzy finder
-(global-set-key (kbd "s-w") 'kill-this-buffer)                                              ;; Close tab
-(global-set-key (kbd "s-q") 'my/kill-emacs)                                                 ;; Just quit Emacs
-(global-set-key (kbd "s-s") 'save-buffer)                                                   ;; Save current buffer
-(global-set-key (kbd "s-S") 'ns-write-file-using-panel)                                     ;; Save as
-(global-set-key (kbd "s-o") 'ns-open-file-using-panel)                                      ;; Open file
-(global-set-key (kbd "s-t") 'open-empty-buffer)                                             ;; Open empty buffer
-(global-set-key (kbd "s-1") (lambda () (interactive) (global-tab-switch 0)))                ;; Switch to tab 1
-(global-set-key (kbd "s-2") (lambda () (interactive) (global-tab-switch 1)))                ;; Switch to tab 2
-(global-set-key (kbd "s-3") (lambda () (interactive) (global-tab-switch 2)))                ;; Switch to tab 3
-(global-set-key (kbd "s-4") (lambda () (interactive) (global-tab-switch 3)))                ;; Switch to tab 4
-(global-set-key (kbd "s-5") (lambda () (interactive) (global-tab-switch 4)))                ;; Switch to tab 5
-(global-set-key (kbd "s-6") (lambda () (interactive) (global-tab-switch 5)))                ;; Switch to tab 6
-(global-set-key (kbd "s-7") (lambda () (interactive) (global-tab-switch 6)))                ;; Switch to tab 7
-(global-set-key (kbd "s-8") (lambda () (interactive) (global-tab-switch 7)))                ;; Switch to tab 8
-(global-set-key (kbd "s-9") (lambda () (interactive) (global-tab-switch 8)))                ;; Switch to tab 9
-(global-set-key (kbd "<backspace>") 'my/delete-backward-char)                               ;; Overrides backspace to handle space tabs
-(global-set-key (kbd "s-i") 'my/set-indent-level)                                           ;; Sets indentation width
-(global-set-key (kbd "s-|") 'neotree-toggle)                                                ;; Toggles the project tree viewer
-(global-set-key (kbd "s-/") 'neotree-dir)                                                   ;; Changes the root directory of project tree viewer
+(global-set-key (my/kbd "s-S-<left>") (lambda () (interactive) (my/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
+(global-set-key (my/kbd "s-<left>") (lambda () (interactive) (my/move-beginning-of-line nil))) ;; CMD + left moves to beginning of line
+(global-set-key (my/kbd "s-<right>") 'move-end-of-line)                                        ;; CMD + right moves to end of line
+(global-set-key (my/kbd "s-<up>") 'beginning-of-buffer)                                        ;; CMD + up moves to beginning of file
+(global-set-key (my/kbd "s-<down>") 'end-of-buffer)                                            ;; CMD + down moves to end of file
+(global-set-key (my/kbd "s-l") 'highlight-line)                                                ;; CMD + L highlights the current line
+(global-set-key (my/kbd "s-<return>") 'eshell)                                                 ;; CMD + enter opens the Emacs shell
+(global-set-key (my/kbd "s-<enter>") 'eshell)                                                  ;; CMD + enter opens the Emacs shell
+(global-set-key (my/kbd "s-<") 'previous-buffer)                                               ;; Go to previous tab
+(global-set-key (my/kbd "s->") 'next-buffer)                                                   ;; Go to next tab
+(global-set-key (my/kbd "s-]") 'my/indent-region)                                              ;; Indents the highlighted region
+(global-set-key (my/kbd "s-[") 'my/outdent-region)                                             ;; Outdents the highlighted region
+(global-set-key (my/kbd "s-f") 'fuzzy-finder)                                                  ;; Opens the fuzzy finder
+(global-set-key (my/kbd "s-w") 'kill-this-buffer)                                              ;; Close tab
+(global-set-key (my/kbd "s-q") 'my/kill-emacs)                                                 ;; Just quit Emacs
+(global-set-key (my/kbd "s-s") 'save-buffer)                                                   ;; Save current buffer
+(global-set-key (my/kbd "s-S") 'ns-write-file-using-panel)                                     ;; Save as
+(global-set-key (my/kbd "s-o") 'ns-open-file-using-panel)                                      ;; Open file
+(global-set-key (my/kbd "s-t") 'open-empty-buffer)                                             ;; Open empty buffer
+(global-set-key (my/kbd "s-1") (lambda () (interactive) (global-tab-switch 0)))                ;; Switch to tab 1
+(global-set-key (my/kbd "s-2") (lambda () (interactive) (global-tab-switch 1)))                ;; Switch to tab 2
+(global-set-key (my/kbd "s-3") (lambda () (interactive) (global-tab-switch 2)))                ;; Switch to tab 3
+(global-set-key (my/kbd "s-4") (lambda () (interactive) (global-tab-switch 3)))                ;; Switch to tab 4
+(global-set-key (my/kbd "s-5") (lambda () (interactive) (global-tab-switch 4)))                ;; Switch to tab 5
+(global-set-key (my/kbd "s-6") (lambda () (interactive) (global-tab-switch 5)))                ;; Switch to tab 6
+(global-set-key (my/kbd "s-7") (lambda () (interactive) (global-tab-switch 6)))                ;; Switch to tab 7
+(global-set-key (my/kbd "s-8") (lambda () (interactive) (global-tab-switch 7)))                ;; Switch to tab 8
+(global-set-key (my/kbd "s-9") (lambda () (interactive) (global-tab-switch 8)))                ;; Switch to tab 9
+(global-set-key (my/kbd "s-i") 'my/set-indent-level)                                           ;; Sets indentation width
+(global-set-key (my/kbd "s-|") 'neotree-toggle)                                                ;; Toggles the project tree viewer
+(global-set-key (my/kbd "s-/") 'neotree-dir)                                                   ;; Changes the root directory of project tree viewer
+(global-set-key (my/kbd "<backspace>") 'my/delete-backward-char)                               ;; Overrides backspace to handle space tabs
+(global-set-key (my/kbd "<escape>") 'keyboard-escape-quit)                                     ;; You can use escape key to quit command line
+(global-set-key (my/kbd "<tab>") 'tab-to-tab-stop)                                             ;; Tab adds a couple spaces
 
 ;; Okay we're done now
 (provide 'startup)

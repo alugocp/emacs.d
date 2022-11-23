@@ -2,6 +2,7 @@
 Yep, I'm an Emacs user now.
 
 ## Getting started
+This configuration has been developed for Emacs version 28.
 Make sure you delete your `~/.emacs` file or Emacs won't look for `~/.emacs.d/init.el`.
 Run the following command to make this starter kit usable:
 
@@ -11,6 +12,12 @@ cp init.el.template init.el
 
 You will also need to install the following command-line tools:
 - [fzf](https://github.com/junegunn/fzf)
+
+Then run the following commands after opening Emacs for the first time:
+
+```sh
+git restore elpa
+```
 
 ## Todo
 - [x] Figure out how to indent by only tab-width spaces (at least for `typescript-mode`)
@@ -23,5 +30,6 @@ You will also need to install the following command-line tools:
 - [x] Backspace should take spaces 2 at a time (like real tabs)
 - [x] Find a good plugin for search + replace (should have regex and case sensitivity support, as well as project-wide search)
 - [x] Figure out how to reorient the project viewer to a new root directory
-- [ ] CTRL + left or right should skip to the next word, but non-alphanumeric characters count as separate words from each other as long as they are different characters
+- [x] Add some customization and cross-platform support
 - [ ] Rebrand as my own Emacs configuration
+- [ ] CTRL + left or right should skip to the next word, but non-alphanumeric characters count as separate words from each other as long as they are different characters
