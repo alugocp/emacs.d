@@ -1,11 +1,12 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
-(setq initial-tab-width 2)
-(setq initial-screen-width 150)
-(setq initial-screen-height 50)
-(setq command-key "C")
-(setq indentation-variables '(
+(setq library-name/initial-tab-width 2)
+(setq library-name/initial-screen-width 150)
+(setq library-name/initial-screen-height 50)
+(setq library-name/command-key "C")
+(setq library-name/indentation-variables '(
   tab-width
   typescript-indent-level
+  lisp-indent-level
   js-indent-level
 ))
 (require 'startup)
