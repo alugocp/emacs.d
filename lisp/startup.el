@@ -1,3 +1,5 @@
+;; Include dependencies
+(require 'redo+)
 
 ;; Customizable values
 (defcustom initial-tab-width 2
@@ -17,21 +19,16 @@
 (setq create-lockfiles nil)                                  ;; Don't create lockfiles
 (setq inhibit-startup-message t)                             ;; No startup message
 (setq transient-mark-mode (cons 'only transient-mark-mode))  ;; Allows you to de-select by hitting an arrow key
-(setq-default indent-tabs-mode nil)                          ;; Don't use tabs for indentation
 (setq whitespace-style '(tabs tab-mark))                     ;; Displays a mark for tab characters
 (setq initial-scratch-message ";; Hello, world!")            ;; Set default buffer message
 (setq mouse-wheel-tilt-scroll t)                             ;; Allows you to scroll horizontally
 (setq mouse-wheel-flip-direction 1)                          ;; Sets my preferred mouse pad scrolling direction
+(setq-default indent-tabs-mode nil)                          ;; Don't use tabs for indentation
 (setq-default truncate-lines 1)                              ;; Won't wrap long lines
 (setq-default electric-indent-inhibit t)                     ;; Don't indent current line on RET
 (setq-default tab-line-tabs-function                         ;; Keeps our tab order consistent
   (lambda () (sort (tab-line-tabs-window-buffers)
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
-
-;; Set indentation width
-(defun my/set-indentation-width (n)
-  (dolist (variable indentation-variables) (set-default variable n)))
-(my/set-indentation-width initial-tab-width)
 
 ;; Modal function calls
 (set-frame-size (selected-frame) initial-screen-width initial-screen-height) ;; Set initial frame size
@@ -64,8 +61,8 @@
     (package-install pkg)))
 
 ;; Package integration setup
-(add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
+(add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
+(add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh) ;; Syncs diff-hl and magit
 (global-diff-hl-mode)                                           ;; Use fringe to show edited lines
 (neotree-toggle)                                                ;; Activates the file tree viewer by default
 
@@ -182,6 +179,12 @@
   (if (string= "s-" (substring shortcut 0 2))
     (kbd (concat command-key (substring shortcut 1)))
     (kbd shortcut)))
+(defun my/select-all ()
+  (interactive)
+  (set-mark (point-min))
+  (goto-char (point-max)))
+(defun my/set-indentation-width (n)
+  (dolist (variable indentation-variables) (set-default variable n)))
 
 ;; Key bindings
 (global-set-key (my/kbd "s-S-<left>") (lambda () (interactive) (my/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
@@ -192,17 +195,21 @@
 (global-set-key (my/kbd "s-l") 'highlight-line)                                                ;; CMD + L highlights the current line
 (global-set-key (my/kbd "s-<return>") 'eshell)                                                 ;; CMD + enter opens the Emacs shell
 (global-set-key (my/kbd "s-<enter>") 'eshell)                                                  ;; CMD + enter opens the Emacs shell
-(global-set-key (my/kbd "s-<") 'previous-buffer)                                               ;; Go to previous tab
-(global-set-key (my/kbd "s->") 'next-buffer)                                                   ;; Go to next tab
 (global-set-key (my/kbd "s-]") 'my/indent-region)                                              ;; Indents the highlighted region
 (global-set-key (my/kbd "s-[") 'my/outdent-region)                                             ;; Outdents the highlighted region
 (global-set-key (my/kbd "s-f") 'fuzzy-finder)                                                  ;; Opens the fuzzy finder
 (global-set-key (my/kbd "s-w") 'kill-this-buffer)                                              ;; Close tab
 (global-set-key (my/kbd "s-q") 'my/kill-emacs)                                                 ;; Just quit Emacs
 (global-set-key (my/kbd "s-s") 'save-buffer)                                                   ;; Save current buffer
-(global-set-key (my/kbd "s-S") 'ns-write-file-using-panel)                                     ;; Save as
-(global-set-key (my/kbd "s-o") 'ns-open-file-using-panel)                                      ;; Open file
+(global-set-key (my/kbd "s-S") 'write-file)                                                    ;; Save as
+(global-set-key (my/kbd "s-o") 'find-file)                                                     ;; Open file
 (global-set-key (my/kbd "s-t") 'open-empty-buffer)                                             ;; Open empty buffer
+(global-set-key (my/kbd "s-i") 'my/set-indent-level)                                           ;; Sets indentation width
+(global-set-key (my/kbd "s-a") 'my/select-all)                                                 ;; Selects the entire buffer
+(global-set-key (my/kbd "s-z") 'undo)                                                          ;; Undo an action
+(global-set-key (my/kbd "s-Z") 'redo)                                                          ;; Redo an action
+(global-set-key (my/kbd "s-|") 'neotree-toggle)                                                ;; Toggles the project tree viewer
+(global-set-key (my/kbd "s-/") 'neotree-dir)                                                   ;; Changes the root directory of project tree viewer
 (global-set-key (my/kbd "s-1") (lambda () (interactive) (global-tab-switch 0)))                ;; Switch to tab 1
 (global-set-key (my/kbd "s-2") (lambda () (interactive) (global-tab-switch 1)))                ;; Switch to tab 2
 (global-set-key (my/kbd "s-3") (lambda () (interactive) (global-tab-switch 2)))                ;; Switch to tab 3
@@ -212,12 +219,12 @@
 (global-set-key (my/kbd "s-7") (lambda () (interactive) (global-tab-switch 6)))                ;; Switch to tab 7
 (global-set-key (my/kbd "s-8") (lambda () (interactive) (global-tab-switch 7)))                ;; Switch to tab 8
 (global-set-key (my/kbd "s-9") (lambda () (interactive) (global-tab-switch 8)))                ;; Switch to tab 9
-(global-set-key (my/kbd "s-i") 'my/set-indent-level)                                           ;; Sets indentation width
-(global-set-key (my/kbd "s-|") 'neotree-toggle)                                                ;; Toggles the project tree viewer
-(global-set-key (my/kbd "s-/") 'neotree-dir)                                                   ;; Changes the root directory of project tree viewer
 (global-set-key (my/kbd "<backspace>") 'my/delete-backward-char)                               ;; Overrides backspace to handle space tabs
 (global-set-key (my/kbd "<escape>") 'keyboard-escape-quit)                                     ;; You can use escape key to quit command line
 (global-set-key (my/kbd "<tab>") 'tab-to-tab-stop)                                             ;; Tab adds a couple spaces
+
+;; Custom function calls
+(my/set-indentation-width initial-tab-width)
 
 ;; Okay we're done now
 (provide 'startup)

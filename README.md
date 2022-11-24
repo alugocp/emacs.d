@@ -2,7 +2,7 @@
 Yep, I'm an Emacs user now.
 
 ## Getting started
-This configuration has been developed for Emacs version 28.
+This configuration has been developed for Emacs version 27 and up.
 Make sure you delete your `~/.emacs` file or Emacs won't look for `~/.emacs.d/init.el`.
 Run the following command to make this starter kit usable:
 
@@ -32,4 +32,3 @@ git restore elpa
 - [x] Figure out how to reorient the project viewer to a new root directory
 - [x] Add some customization and cross-platform support
 - [ ] Rebrand as my own Emacs configuration
-- [ ] CTRL + left or right should skip to the next word, but non-alphanumeric characters count as separate words from each other as long as they are different characters
