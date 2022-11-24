@@ -78,8 +78,7 @@
               (progn
                   (open-empty-buffer)
                   (kill-buffer "*Messages*"))))))
-(defun library-name/no-deactivate-mark (&rest _) (setq deactivate-mark nil)) ;; Copying doesn't deselect the highlighted text
-(advice-add 'kill-ring-save :after #'no-deactivate-mark)
+(advice-add 'kill-ring-save :after (lambda (&rest _) (setq deactivate-mark nil)))
 
 ;; Custom function definitions
 
@@ -216,7 +215,7 @@
 (global-set-key (library-name/kbd "s-<right>") 'move-end-of-line)                                                  ;; CMD + right moves to end of line
 (global-set-key (library-name/kbd "s-<up>") 'beginning-of-buffer)                                                  ;; CMD + up moves to beginning of file
 (global-set-key (library-name/kbd "s-<down>") 'end-of-buffer)                                                      ;; CMD + down moves to end of file
-(global-set-key (library-name/kbd "s-l") 'highlight-line)                                                          ;; CMD + L highlights the current line
+(global-set-key (library-name/kbd "s-l") 'library-name/highlight-line)                                             ;; CMD + L highlights the current line
 (global-set-key (library-name/kbd "s-<return>") 'eshell)                                                           ;; CMD + enter opens the Emacs shell
 (global-set-key (library-name/kbd "s-<enter>") 'eshell)                                                            ;; CMD + enter opens the Emacs shell
 (global-set-key (library-name/kbd "s-]") 'library-name/indent-region)                                              ;; Indents the highlighted region
@@ -232,6 +231,9 @@
 (global-set-key (library-name/kbd "s-a") 'library-name/select-all)                                                 ;; Selects the entire buffer
 (global-set-key (library-name/kbd "s-z") 'undo)                                                                    ;; Undo an action
 (global-set-key (library-name/kbd "s-Z") 'redo)                                                                    ;; Redo an action
+(global-set-key (library-name/kbd "s-x") 'kill-region)                                                             ;; Cut
+(global-set-key (library-name/kbd "s-c") 'kill-ring-save)                                                          ;; Copy
+(global-set-key (library-name/kbd "s-v") 'yank)                                                                    ;; Paste
 (global-set-key (library-name/kbd "s-|") 'neotree-toggle)                                                          ;; Toggles the project tree viewer
 (global-set-key (library-name/kbd "s-/") 'neotree-dir)                                                             ;; Changes the root directory of project tree viewer
 (global-set-key (library-name/kbd "s-1") (lambda () (interactive) (global-tab-switch 0)))                          ;; Switch to tab 1
