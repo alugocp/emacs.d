@@ -1,8 +1,15 @@
-# Alex's Emacs setup
-Yep, I'm an Emacs user now.
+# Potion Emacs
+![Verison](https://img.shields.io/badge/Version-1.0-blue)
+![Emacs](https://img.shields.io/badge/Support-Emacs%2027+-blueviolet)
+
+Potion Emacs is a starter kit for those who miss Atom and who will never forgive VSCode.
+It knows what it did.
+
+Anyways Potion Emacs bundles some git diff highlighting, a project viewer, a text finder, and many key bindings found in Atom and similar text editors.
+
+<img src="./potion.png" height="400"/>
 
 ## Getting started
-This configuration has been developed for Emacs version 27 and up.
 Make sure you delete your `~/.emacs` file or Emacs won't look for `~/.emacs.d/init.el`.
 Run the following command to make this starter kit usable:
 
@@ -11,6 +18,7 @@ cp init.el.template init.el
 ```
 
 You will also need to install the following command-line tools:
+- [git](https://git-scm.com)
 - [fzf](https://github.com/junegunn/fzf)
 
 Then run the following commands after opening Emacs for the first time:
@@ -19,16 +27,55 @@ Then run the following commands after opening Emacs for the first time:
 git restore elpa
 ```
 
-## Todo
-- [x] Figure out how to indent by only tab-width spaces (at least for `typescript-mode`)
-- [x] Make git gutter colors more vibrant
-- [x] Don't have scratch buffer when opening files
-- [x] Jesus stop asking me about closing modified buffers
-- [x] Write my own `(indent-region)` for CMD + ] (remap tab switching to avoid collision)
-- [x] Write an inverse of `(indent-region)` and map it to CMD + [
-- [x] CMD + left should stop at preceding whitespace
-- [x] Backspace should take spaces 2 at a time (like real tabs)
-- [x] Find a good plugin for search + replace (should have regex and case sensitivity support, as well as project-wide search)
-- [x] Figure out how to reorient the project viewer to a new root directory
-- [x] Add some customization and cross-platform support
-- [ ] Rebrand as my own Emacs configuration
+## Features
+
+### Included packages
+
+- [redo+](https://www.emacswiki.org/emacs/RedoPlus) makes it easier to undo/redo actions
+- [typescript-mode](https://melpa.org/#/typescript-mode) adds TypeScript support
+- [fuzzy-finder](https://melpa.org/#/fuzzy-finder) allows you to search the project for text and maybe replace it
+- [diff-hl](https://melpa.org/#/diff-hl) highlights the gutter next to lines with uncommitted changes
+- [neotree](https://melpa.org/#/neotree) powers the project viewer
+- [magit](https://melpa.org/#/magit) provides some git support
+
+### Keybindings
+Potion Emacs allows you to replace the `CMD` key in these keybindings with another key.
+
+|Keys|Function|
+|---|---|
+|CMD + LEFT|skip to beginning of line|
+|CMD + RIGHT|skip to end of line|
+|CMD + UP|skip to beginning of buffer|
+|CMD + DOWN|skip to end of buffer|
+|CMD + L|highlight current line|
+|CMD + ENTER|open terminal|
+|CMD + ]|indent current line or region|
+|CMD + [|outdent current line or region|
+|CMD + F|search project for text|
+|CMD + W|close panel|
+|CMD + Q|quit Emacs|
+|CMD + S|save current buffer|
+|CMD + SHIFT + S|save current buffer as|
+|CMD + O|open a file|
+|CMD + T|create new empty buffer|
+|CMD + I|set indent width|
+|CMD + A|highlight entire buffer|
+|CMD + Z|undo|
+|CMD + SHIFT + Z|redo|
+|CMD + X|cut|
+|CMD + C|copy|
+|CMD + V|paste|
+|CMD + \||toggle project tree|
+|CMD + /|set root directory for project tree|
+|CMD + \<1 - 9\>|skip to *nth* tab in editor|
+
+### Customization
+- `potion-emacs/initial-tab-width`: The initial tab width to set when opening this editor (default `2`)
+
+- `potion-emacs/initial-screen-width`: The initial screen width to set when opening this editor (default `150`)
+
+- `potion-emacs/initial-screen-height`: The initial screen height to set when opening this editor (default `50`)
+
+- `potion-emacs/command-key`: The key to be used in place of CMD for keybindings (default `"C"`)
+
+- `potion-emacs/indentation-variables`: A list of indentation variables to keep in sync (default `'()`)

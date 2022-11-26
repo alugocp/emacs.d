@@ -9,4 +9,4 @@
   lisp-indent-level
   js-indent-level
 ))
-(require 'startup)
+(require 'potion-emacs)
