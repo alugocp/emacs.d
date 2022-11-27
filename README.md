@@ -48,11 +48,13 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 |CMD + UP|skip to beginning of buffer|
 |CMD + DOWN|skip to end of buffer|
 |CMD + L|highlight current line|
-|CMD + ENTER|open terminal|
+|CMD + SHIFT + ENTER|open terminal|
+|CMD + ENTER|open Emacs command line|
 |CMD + ]|indent current line or region|
 |CMD + [|outdent current line or region|
-|CMD + F|search project for text|
-|CMD + W|close panel|
+|CMD + F|search project or file for text|
+|CMD + SHIFT + F|search through files in project|
+|CMD + W|close the current tab or panel|
 |CMD + Q|quit Emacs|
 |CMD + S|save current buffer|
 |CMD + SHIFT + S|save current buffer as|
@@ -71,11 +73,7 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 
 ### Customization
 - `potion-emacs/initial-tab-width`: The initial tab width to set when opening this editor (default `2`)
-
 - `potion-emacs/initial-screen-width`: The initial screen width to set when opening this editor (default `150`)
-
 - `potion-emacs/initial-screen-height`: The initial screen height to set when opening this editor (default `50`)
-
 - `potion-emacs/command-key`: The key to be used in place of CMD for keybindings (default `"C"`)
-
 - `potion-emacs/indentation-variables`: A list of indentation variables to keep in sync (default `'()`)

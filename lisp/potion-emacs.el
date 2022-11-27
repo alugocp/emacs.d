@@ -14,6 +14,7 @@
   "A list of indentation variables to keep in sync")
 
 ;; Miscellaneous variables
+(setq potion-emacs/main-window (selected-window))            ;; Keep track of the "main" window
 (setq backup-inhibited t)                                    ;; Don't create file backups
 (setq auto-save-default nil)                                 ;; Don't auto save files
 (setq create-lockfiles nil)                                  ;; Don't create lockfiles
@@ -76,7 +77,7 @@
           (delete-window))
           (when (member "*Messages*" (mapcar (lambda (a) (buffer-name a)) (funcall tab-line-tabs-function)))
               (progn
-                  (open-empty-buffer)
+                  (potion-emacs/open-empty-buffer)
                   (kill-buffer "*Messages*"))))))
 (advice-add 'kill-ring-save :after (lambda (&rest _) (setq deactivate-mark nil)))
 
@@ -209,6 +210,12 @@
   (set-mark (point-min))
   (goto-char (point-max)))
 
+(defun potion-emacs/close-tab-or-window ()
+    (interactive)
+    (if (eq (selected-window) potion-emacs/main-window)
+        (kill-this-buffer)
+        (delete-window)))
+
 ;; Key bindings
 (global-set-key (potion-emacs/kbd "s-S-<left>") (lambda () (interactive) (potion-emacs/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
 (global-set-key (potion-emacs/kbd "s-<left>") (lambda () (interactive) (potion-emacs/move-beginning-of-line nil))) ;; CMD + left moves to beginning of line
@@ -216,17 +223,20 @@
 (global-set-key (potion-emacs/kbd "s-<up>") 'beginning-of-buffer)                                                  ;; CMD + up moves to beginning of file
 (global-set-key (potion-emacs/kbd "s-<down>") 'end-of-buffer)                                                      ;; CMD + down moves to end of file
 (global-set-key (potion-emacs/kbd "s-l") 'potion-emacs/highlight-line)                                             ;; CMD + L highlights the current line
-(global-set-key (potion-emacs/kbd "s-<return>") 'eshell)                                                           ;; CMD + enter opens the Emacs shell
-(global-set-key (potion-emacs/kbd "s-<enter>") 'eshell)                                                            ;; CMD + enter opens the Emacs shell
+(global-set-key (potion-emacs/kbd "s-S-<return>") 'eshell)                                                         ;; Opens an Emacs terminal shell
+(global-set-key (potion-emacs/kbd "s-S-<enter>") 'eshell)                                                          ;; Opens an Emacs terminal shell
+(global-set-key (potion-emacs/kbd "s-<return>") 'execute-extended-command)                                         ;; Lets you run an Emacs function
+(global-set-key (potion-emacs/kbd "s-<enter>") 'execute-extended-command)                                          ;; Lets you run an Emacs function
 (global-set-key (potion-emacs/kbd "s-]") 'potion-emacs/indent-region)                                              ;; Indents the highlighted region
 (global-set-key (potion-emacs/kbd "s-[") 'potion-emacs/outdent-region)                                             ;; Outdents the highlighted region
-(global-set-key (potion-emacs/kbd "s-f") 'fuzzy-finder)                                                            ;; Opens the fuzzy finder
-(global-set-key (potion-emacs/kbd "s-w") 'kill-this-buffer)                                                        ;; Close tab
+(global-set-key (potion-emacs/kbd "s-f") 'rgrep)                                                                   ;; Start an Emacs rgrep process
+(global-set-key (potion-emacs/kbd "s-F") 'fuzzy-finder)                                                            ;; Opens the fuzzy finder
+(global-set-key (potion-emacs/kbd "s-w") 'potion-emacs/close-tab-or-window)                                        ;; Close the current tab or window
 (global-set-key (potion-emacs/kbd "s-q") 'potion-emacs/kill-emacs)                                                 ;; Just quit Emacs
 (global-set-key (potion-emacs/kbd "s-s") 'save-buffer)                                                             ;; Save current buffer
 (global-set-key (potion-emacs/kbd "s-S") 'write-file)                                                              ;; Save as
 (global-set-key (potion-emacs/kbd "s-o") 'find-file)                                                               ;; Open file
-(global-set-key (potion-emacs/kbd "s-t") 'open-empty-buffer)                                                       ;; Open empty buffer
+(global-set-key (potion-emacs/kbd "s-t") 'potion-emacs/open-empty-buffer)                                          ;; Open empty buffer
 (global-set-key (potion-emacs/kbd "s-i") 'potion-emacs/set-indent-level)                                           ;; Sets indentation width
 (global-set-key (potion-emacs/kbd "s-a") 'potion-emacs/select-all)                                                 ;; Selects the entire buffer
 (global-set-key (potion-emacs/kbd "s-z") 'undo)                                                                    ;; Undo an action
@@ -236,15 +246,15 @@
 (global-set-key (potion-emacs/kbd "s-v") 'yank)                                                                    ;; Paste
 (global-set-key (potion-emacs/kbd "s-|") 'neotree-toggle)                                                          ;; Toggles the project tree viewer
 (global-set-key (potion-emacs/kbd "s-/") 'neotree-dir)                                                             ;; Changes the root directory of project tree viewer
-(global-set-key (potion-emacs/kbd "s-1") (lambda () (interactive) (global-tab-switch 0)))                          ;; Switch to tab 1
-(global-set-key (potion-emacs/kbd "s-2") (lambda () (interactive) (global-tab-switch 1)))                          ;; Switch to tab 2
-(global-set-key (potion-emacs/kbd "s-3") (lambda () (interactive) (global-tab-switch 2)))                          ;; Switch to tab 3
-(global-set-key (potion-emacs/kbd "s-4") (lambda () (interactive) (global-tab-switch 3)))                          ;; Switch to tab 4
-(global-set-key (potion-emacs/kbd "s-5") (lambda () (interactive) (global-tab-switch 4)))                          ;; Switch to tab 5
-(global-set-key (potion-emacs/kbd "s-6") (lambda () (interactive) (global-tab-switch 5)))                          ;; Switch to tab 6
-(global-set-key (potion-emacs/kbd "s-7") (lambda () (interactive) (global-tab-switch 6)))                          ;; Switch to tab 7
-(global-set-key (potion-emacs/kbd "s-8") (lambda () (interactive) (global-tab-switch 7)))                          ;; Switch to tab 8
-(global-set-key (potion-emacs/kbd "s-9") (lambda () (interactive) (global-tab-switch 8)))                          ;; Switch to tab 9
+(global-set-key (potion-emacs/kbd "s-1") (lambda () (interactive) (potion-emacs/global-tab-switch 0)))             ;; Switch to tab 1
+(global-set-key (potion-emacs/kbd "s-2") (lambda () (interactive) (potion-emacs/global-tab-switch 1)))             ;; Switch to tab 2
+(global-set-key (potion-emacs/kbd "s-3") (lambda () (interactive) (potion-emacs/global-tab-switch 2)))             ;; Switch to tab 3
+(global-set-key (potion-emacs/kbd "s-4") (lambda () (interactive) (potion-emacs/global-tab-switch 3)))             ;; Switch to tab 4
+(global-set-key (potion-emacs/kbd "s-5") (lambda () (interactive) (potion-emacs/global-tab-switch 4)))             ;; Switch to tab 5
+(global-set-key (potion-emacs/kbd "s-6") (lambda () (interactive) (potion-emacs/global-tab-switch 5)))             ;; Switch to tab 6
+(global-set-key (potion-emacs/kbd "s-7") (lambda () (interactive) (potion-emacs/global-tab-switch 6)))             ;; Switch to tab 7
+(global-set-key (potion-emacs/kbd "s-8") (lambda () (interactive) (potion-emacs/global-tab-switch 7)))             ;; Switch to tab 8
+(global-set-key (potion-emacs/kbd "s-9") (lambda () (interactive) (potion-emacs/global-tab-switch 8)))             ;; Switch to tab 9
 (global-set-key (potion-emacs/kbd "<backspace>") 'potion-emacs/delete-backward-char)                               ;; Overrides backspace to handle space tabs
 (global-set-key (potion-emacs/kbd "<escape>") 'keyboard-escape-quit)                                               ;; You can use escape key to quit command line
 (global-set-key (potion-emacs/kbd "<tab>") 'tab-to-tab-stop)                                                       ;; Tab adds a couple spaces
