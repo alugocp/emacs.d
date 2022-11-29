@@ -70,7 +70,8 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 |CMD + V|paste|
 |CMD + \||toggle project tree|
 |CMD + /|set root directory for project tree|
-|CMD + \<1 - 9\>|skip to *nth* tab in editor|
+|CMD + \<1 - 8\>|skip to *nth* tab in editor|
+|CMD + 9|skip to the last tab in the editor|
 
 ### Customization
 - `potion-emacs/initial-tab-width`: The initial tab width to set when opening this editor (default `2`)

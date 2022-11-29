@@ -106,6 +106,11 @@
     (switch-to-buffer (nth n (mapcar #'buffer-name buffers)))
     nil))
 
+(defun potion-emacs/final-tab-switch ()
+  "Swith the viewer to the last tab"
+  (interactive)
+  (potion-emacs/global-tab-switch (- (length (funcall tab-line-tabs-function)) 1)))
+
 (defun potion-emacs/open-empty-buffer ()
   "Opens a new, empty buffer"
   (interactive)
@@ -211,6 +216,7 @@
   (goto-char (point-max)))
 
 (defun potion-emacs/close-tab-or-window ()
+    "Closes a tab or split window (but leaves at least 1 tab open)"
     (interactive)
     (if (eq (selected-window) potion-emacs/main-window)
         (if (> (length (tab-line-tabs-window-buffers)) 1) (kill-this-buffer))
@@ -255,7 +261,7 @@
 (global-set-key (potion-emacs/kbd "s-6") (lambda () (interactive) (potion-emacs/global-tab-switch 5)))             ;; Switch to tab 6
 (global-set-key (potion-emacs/kbd "s-7") (lambda () (interactive) (potion-emacs/global-tab-switch 6)))             ;; Switch to tab 7
 (global-set-key (potion-emacs/kbd "s-8") (lambda () (interactive) (potion-emacs/global-tab-switch 7)))             ;; Switch to tab 8
-(global-set-key (potion-emacs/kbd "s-9") (lambda () (interactive) (potion-emacs/global-tab-switch 8)))             ;; Switch to tab 9
+(global-set-key (potion-emacs/kbd "s-9") 'potion-emacs/final-tab-switch)                                           ;; Switch to last tab
 (global-set-key (potion-emacs/kbd "<backspace>") 'potion-emacs/delete-backward-char)                               ;; Overrides backspace to handle space tabs
 (global-set-key (potion-emacs/kbd "<escape>") 'keyboard-escape-quit)                                               ;; You can use escape key to quit command line
 (global-set-key (potion-emacs/kbd "<tab>") 'tab-to-tab-stop)                                                       ;; Tab adds a couple spaces
