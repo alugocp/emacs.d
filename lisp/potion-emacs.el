@@ -213,7 +213,7 @@
 (defun potion-emacs/close-tab-or-window ()
     (interactive)
     (if (eq (selected-window) potion-emacs/main-window)
-        (kill-this-buffer)
+        (if (> (length (tab-line-tabs-window-buffers)) 1) (kill-this-buffer))
         (delete-window)))
 
 ;; Key bindings
@@ -229,8 +229,9 @@
 (global-set-key (potion-emacs/kbd "s-<enter>") 'execute-extended-command)                                          ;; Lets you run an Emacs function
 (global-set-key (potion-emacs/kbd "s-]") 'potion-emacs/indent-region)                                              ;; Indents the highlighted region
 (global-set-key (potion-emacs/kbd "s-[") 'potion-emacs/outdent-region)                                             ;; Outdents the highlighted region
-(global-set-key (potion-emacs/kbd "s-f") 'rgrep)                                                                   ;; Start an Emacs rgrep process
-(global-set-key (potion-emacs/kbd "s-F") 'fuzzy-finder)                                                            ;; Opens the fuzzy finder
+(global-set-key (potion-emacs/kbd "s-f") 'occur)                                                                   ;; Search regex match in current file
+(global-set-key (potion-emacs/kbd "s-F") 'rgrep)                                                                   ;; Start an Emacs rgrep process (choose directory/filename)
+(global-set-key (potion-emacs/kbd "s-d") 'fuzzy-finder)                                                            ;; Opens the fuzzy finder
 (global-set-key (potion-emacs/kbd "s-w") 'potion-emacs/close-tab-or-window)                                        ;; Close the current tab or window
 (global-set-key (potion-emacs/kbd "s-q") 'potion-emacs/kill-emacs)                                                 ;; Just quit Emacs
 (global-set-key (potion-emacs/kbd "s-s") 'save-buffer)                                                             ;; Save current buffer
