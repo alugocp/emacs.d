@@ -21,12 +21,6 @@ You will also need to install the following command-line tools:
 - [git](https://git-scm.com)
 - [fzf](https://github.com/junegunn/fzf)
 
-Then run the following commands after opening Emacs for the first time:
-
-```sh
-git restore elpa
-```
-
 ## Features
 
 ### Included packages

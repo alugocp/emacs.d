@@ -1,6 +1,11 @@
 ;; Include dependencies
 (require 'redo+)
 
+;; Important header values
+(defun potion-emacs/stdout (msg)
+    "Prints a string message to stdout"
+    (princ msg #'external-debugging-output))
+
 ;; Customizable values
 (defcustom potion-emacs/initial-tab-width 2
   "The initial tab width to set when opening this editor")
@@ -62,6 +67,24 @@
 (dolist (pkg packages)
   (unless (package-installed-p pkg)
     (package-install pkg)))
+
+;; Changes diff-hl colors
+(defun potion-emacs/reset-hl-colors (diff-hl-dir)
+    (setq file (concat diff-hl-dir "/diff-hl.el"))
+    (setq contents (with-temp-buffer
+        (insert-file-contents file)
+        (buffer-string)))
+    (setq contents (replace-regexp-in-string "'\(\(default :inherit diff-added\)\n    \(\(\(class color\)\) :foreground \"green4\"\)\)" "'((((class color)) :background \"#00ff00\"))" contents))
+    (setq contents (replace-regexp-in-string "'\(\(default :inherit diff-removed\)\n    \(\(\(class color\)\) :foreground \"red3\"\)\)" "'((((class color)) :background \"#ff0000\"))" contents))
+    (setq contents (replace-regexp-in-string "'\(\(default :foreground \"blue3\"\)\n    \(\(\(class color\) \(min-colors 88\) \(background light\)\)\n     :background \"#ddddff\"\)\n    \(\(\(class color\) \(min-colors 88\) \(background dark\)\)\n     :background \"#333355\"\)\)" "'((((class color)) :background \"#ffff00\"))" contents))
+    (with-temp-buffer
+        (insert contents)
+        (when (file-writable-p file)
+            (write-region (point-min)
+                (point-max)
+                file)))
+    (byte-recompile-directory diff-hl-dir 0))
+(potion-emacs/reset-hl-colors (nth 0 (file-expand-wildcards "elpa/diff-hl-*")))
 
 ;; Package integration setup
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
