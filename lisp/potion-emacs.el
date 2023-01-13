@@ -3,8 +3,8 @@
 
 ;; Important header values
 (defun potion-emacs/stdout (msg)
-    "Prints a string message to stdout"
-    (princ msg #'external-debugging-output))
+  "Prints a string message to stdout"
+  (princ msg #'external-debugging-output))
 
 ;; Customizable values
 (defcustom potion-emacs/initial-tab-width 2
@@ -15,6 +15,8 @@
   "The initial screen height to set when opening this editor")
 (defcustom potion-emacs/command-key "C"
   "The key to be used in place of CMD for keybindings")
+(defcustom potion-emacs/terminal "/bin/zsh"
+  "The terminal command to be run by Emacs")
 (defcustom potion-emacs/indentation-variables '()
   "A list of indentation variables to keep in sync")
 
@@ -245,6 +247,11 @@
         (if (> (length (tab-line-tabs-window-buffers)) 1) (kill-this-buffer))
         (delete-window)))
 
+(defun potion-emacs/terminal ()
+    "Opens a pretty terminal tab with no configuration needed"
+    (interactive)
+    (ansi-term potion-emacs/terminal))
+
 ;; Key bindings
 (global-set-key (potion-emacs/kbd "s-S-<left>") (lambda () (interactive) (potion-emacs/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
 (global-set-key (potion-emacs/kbd "s-<left>") (lambda () (interactive) (potion-emacs/move-beginning-of-line nil))) ;; CMD + left moves to beginning of line
@@ -252,8 +259,8 @@
 (global-set-key (potion-emacs/kbd "s-<up>") 'beginning-of-buffer)                                                  ;; CMD + up moves to beginning of file
 (global-set-key (potion-emacs/kbd "s-<down>") 'end-of-buffer)                                                      ;; CMD + down moves to end of file
 (global-set-key (potion-emacs/kbd "s-l") 'potion-emacs/highlight-line)                                             ;; CMD + L highlights the current line
-(global-set-key (potion-emacs/kbd "s-S-<return>") 'eshell)                                                         ;; Opens an Emacs terminal shell
-(global-set-key (potion-emacs/kbd "s-S-<enter>") 'eshell)                                                          ;; Opens an Emacs terminal shell
+(global-set-key (potion-emacs/kbd "s-S-<return>") 'potion-emacs/terminal)                                          ;; Opens an Emacs terminal shell
+(global-set-key (potion-emacs/kbd "s-S-<enter>") 'potion-emacs/terminal)                                           ;; Opens an Emacs terminal shell
 (global-set-key (potion-emacs/kbd "s-<return>") 'execute-extended-command)                                         ;; Lets you run an Emacs function
 (global-set-key (potion-emacs/kbd "s-<enter>") 'execute-extended-command)                                          ;; Lets you run an Emacs function
 (global-set-key (potion-emacs/kbd "s-]") 'potion-emacs/indent-region)                                              ;; Indents the highlighted region

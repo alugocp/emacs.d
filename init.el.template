@@ -3,6 +3,7 @@
 (setq potion-emacs/initial-screen-width 150)
 (setq potion-emacs/initial-screen-height 50)
 (setq potion-emacs/command-key "C")
+(setq potion-emacs/terminal "/bin/zsh")
 (setq potion-emacs/indentation-variables '(
   tab-width
   typescript-indent-level
