@@ -1,5 +1,16 @@
+;; Boost GC threshold to minimize lag during startup
+(setq gc-cons-threshold most-positive-fixnum)
+
+;; Lower runtime GC threshold to 8 MB after startup (default is 800kB)
+(add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold (expt 2 23))))
+
 ;; Include dependencies
-(require 'redo+)
+(autoload 'redo "redo+" "Redo the last undone change" t)
+(autoload 'undo "redo+" "Undo the last change" t)
+
+;; Set the UI style
+(require 'billw-theme)
+(add-hook 'after-init-hook (lambda () (load-theme 'billw)))
 
 ;; Important header values
 (defun potion-emacs/stdout (msg)
@@ -49,10 +60,6 @@
   potion-emacs/initial-screen-width
   potion-emacs/initial-screen-height)
 
-;; Set the UI style
-(require 'billw-theme)
-(add-hook 'after-init-hook (lambda () (load-theme 'billw)))
-
 ;; Use the MELPA package archive to install necessary packages
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -86,7 +93,7 @@
                 (point-max)
                 file)))
     (byte-recompile-directory diff-hl-dir 0))
-(potion-emacs/reset-hl-colors (nth 0 (file-expand-wildcards "elpa/diff-hl-*")))
+(potion-emacs/reset-hl-colors (nth 0 (file-expand-wildcards "~/.emacs.d/elpa/diff-hl-*")))
 
 ;; Package integration setup
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
