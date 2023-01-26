@@ -4,6 +4,11 @@
 ;; Lower runtime GC threshold to 8 MB after startup (default is 800kB)
 (add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold (expt 2 23))))
 
+;; Prevent new buffers from opening in windows (split screen views)
+(add-hook 'emacs-startup-hook (lambda ()
+    (setq-default pop-up-windows nil)
+    (setq-default pop-up-frames nil)))
+
 ;; Include dependencies
 (autoload 'redo "redo+" "Redo the last undone change" t)
 (autoload 'undo "redo+" "Undo the last change" t)
@@ -32,20 +37,20 @@
   "A list of indentation variables to keep in sync")
 
 ;; Miscellaneous variables
-(setq potion-emacs/main-window (selected-window))            ;; Keep track of the "main" window
-(setq backup-inhibited t)                                    ;; Don't create file backups
-(setq auto-save-default nil)                                 ;; Don't auto save files
-(setq create-lockfiles nil)                                  ;; Don't create lockfiles
-(setq inhibit-startup-message t)                             ;; No startup message
-(setq transient-mark-mode (cons 'only transient-mark-mode))  ;; Allows you to de-select by hitting an arrow key
-(setq whitespace-style '(tabs tab-mark))                     ;; Displays a mark for tab characters
-(setq initial-scratch-message ";; Hello, world!")            ;; Set default buffer message
-(setq mouse-wheel-tilt-scroll t)                             ;; Allows you to scroll horizontally
-(setq mouse-wheel-flip-direction 1)                          ;; Sets my preferred mouse pad scrolling direction
-(setq-default indent-tabs-mode nil)                          ;; Don't use tabs for indentation
-(setq-default truncate-lines 1)                              ;; Won't wrap long lines
-(setq-default electric-indent-inhibit t)                     ;; Don't indent current line on RET
-(setq-default tab-line-tabs-function                         ;; Keeps our tab order consistent
+(setq potion-emacs/main-window (selected-window))           ;; Keep track of the "main" window
+(setq backup-inhibited t)                                   ;; Don't create file backups
+(setq auto-save-default nil)                                ;; Don't auto save files
+(setq create-lockfiles nil)                                 ;; Don't create lockfiles
+(setq inhibit-startup-message t)                            ;; No startup message
+(setq transient-mark-mode (cons 'only transient-mark-mode)) ;; Allows you to de-select by hitting an arrow key
+(setq whitespace-style '(tabs tab-mark))                    ;; Displays a mark for tab characters
+(setq initial-scratch-message ";; Hello, world!")           ;; Set default buffer message
+(setq mouse-wheel-tilt-scroll t)                            ;; Allows you to scroll horizontally
+(setq mouse-wheel-flip-direction 1)                         ;; Sets my preferred mouse pad scrolling direction
+(setq-default indent-tabs-mode nil)                         ;; Don't use tabs for indentation
+(setq-default truncate-lines 1)                             ;; Won't wrap long lines
+(setq-default electric-indent-inhibit t)                    ;; Don't indent current line on RET
+(setq-default tab-line-tabs-function                        ;; Keeps our tab order consistent
   (lambda () (sort (tab-line-tabs-window-buffers)
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
 
