@@ -50,6 +50,7 @@
 (setq-default indent-tabs-mode nil)                         ;; Don't use tabs for indentation
 (setq-default truncate-lines 1)                             ;; Won't wrap long lines
 (setq-default electric-indent-inhibit t)                    ;; Don't indent current line on RET
+(setq-default case-fold-search nil)                         ;; Makes occur case sensitive
 (setq-default tab-line-tabs-function                        ;; Keeps our tab order consistent
   (lambda () (sort (tab-line-tabs-window-buffers)
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
@@ -71,7 +72,7 @@
 (package-initialize)
 (setq packages '(
   typescript-mode ;; TypeScript syntax highlighting
-  fuzzy-finder    ;; Fuzzy finder package
+  rust-mode       ;; Rust syntax highlighting
   diff-hl         ;; Show line changes in fringe
   neotree         ;; File tree viewer
   magit           ;; Git support
@@ -279,7 +280,6 @@
 (global-set-key (potion-emacs/kbd "s-[") 'potion-emacs/outdent-region)                                             ;; Outdents the highlighted region
 (global-set-key (potion-emacs/kbd "s-f") 'occur)                                                                   ;; Search regex match in current file
 (global-set-key (potion-emacs/kbd "s-F") 'rgrep)                                                                   ;; Start an Emacs rgrep process (choose directory/filename)
-(global-set-key (potion-emacs/kbd "s-d") 'fuzzy-finder)                                                            ;; Opens the fuzzy finder
 (global-set-key (potion-emacs/kbd "s-w") 'potion-emacs/close-tab-or-window)                                        ;; Close the current tab or window
 (global-set-key (potion-emacs/kbd "s-q") 'potion-emacs/kill-emacs)                                                 ;; Just quit Emacs
 (global-set-key (potion-emacs/kbd "s-s") 'save-buffer)                                                             ;; Save current buffer
