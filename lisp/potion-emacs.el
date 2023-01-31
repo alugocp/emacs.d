@@ -260,10 +260,21 @@
         (if (> (length (tab-line-tabs-window-buffers)) 1) (kill-this-buffer))
         (delete-window)))
 
-(defun potion-emacs/terminal ()
+(defun potion-emacs/open-terminal ()
     "Opens a pretty terminal tab with no configuration needed"
     (interactive)
     (ansi-term potion-emacs/terminal))
+
+(defun potion-emacs/replace ()
+    "Replaces currently searched regex"
+    (interactive)
+    (setq replacement (read-from-minibuffer "String replacement: "))
+    (set-mark (point))
+    (goto-char (point-min))
+    (while (re-search-forward "hello" nil t)
+        (replace-match replacement))
+    (goto-char (mark))
+    (deactivate-mark))
 
 ;; Key bindings
 (global-set-key (potion-emacs/kbd "s-S-<left>") (lambda () (interactive) (potion-emacs/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
@@ -272,14 +283,15 @@
 (global-set-key (potion-emacs/kbd "s-<up>") 'beginning-of-buffer)                                                  ;; CMD + up moves to beginning of file
 (global-set-key (potion-emacs/kbd "s-<down>") 'end-of-buffer)                                                      ;; CMD + down moves to end of file
 (global-set-key (potion-emacs/kbd "s-l") 'potion-emacs/highlight-line)                                             ;; CMD + L highlights the current line
-(global-set-key (potion-emacs/kbd "s-S-<return>") 'potion-emacs/terminal)                                          ;; Opens an Emacs terminal shell
-(global-set-key (potion-emacs/kbd "s-S-<enter>") 'potion-emacs/terminal)                                           ;; Opens an Emacs terminal shell
+(global-set-key (potion-emacs/kbd "s-S-<return>") 'potion-emacs/open-terminal)                                     ;; Opens an Emacs terminal shell
+(global-set-key (potion-emacs/kbd "s-S-<enter>") 'potion-emacs/open-terminal)                                      ;; Opens an Emacs terminal shell
 (global-set-key (potion-emacs/kbd "s-<return>") 'execute-extended-command)                                         ;; Lets you run an Emacs function
 (global-set-key (potion-emacs/kbd "s-<enter>") 'execute-extended-command)                                          ;; Lets you run an Emacs function
 (global-set-key (potion-emacs/kbd "s-]") 'potion-emacs/indent-region)                                              ;; Indents the highlighted region
 (global-set-key (potion-emacs/kbd "s-[") 'potion-emacs/outdent-region)                                             ;; Outdents the highlighted region
 (global-set-key (potion-emacs/kbd "s-f") 'occur)                                                                   ;; Search regex match in current file
 (global-set-key (potion-emacs/kbd "s-F") 'rgrep)                                                                   ;; Start an Emacs rgrep process (choose directory/filename)
+(global-set-key (potion-emacs/kbd "s-r") 'potion-emacs/replace)                                                    ;; Replace currently searched regex
 (global-set-key (potion-emacs/kbd "s-w") 'potion-emacs/close-tab-or-window)                                        ;; Close the current tab or window
 (global-set-key (potion-emacs/kbd "s-q") 'potion-emacs/kill-emacs)                                                 ;; Just quit Emacs
 (global-set-key (potion-emacs/kbd "s-s") 'save-buffer)                                                             ;; Save current buffer

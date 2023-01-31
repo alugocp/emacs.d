@@ -48,6 +48,7 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 |CMD + [|outdent current line or region|
 |CMD + F|search current buffer for text|
 |CMD + SHIFT + F|search file(s) for text|
+|CMD + R|replaces searched text|
 |CMD + W|close the current tab or panel|
 |CMD + Q|quit Emacs|
 |CMD + S|save current buffer|
