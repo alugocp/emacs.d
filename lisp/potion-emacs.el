@@ -76,6 +76,7 @@
   diff-hl         ;; Show line changes in fringe
   neotree         ;; File tree viewer
   magit           ;; Git support
+  rg              ;; Ripgrep file search wrapper for Elisp
 ))
 (unless package-archive-contents
   (package-refresh-contents))
@@ -289,8 +290,8 @@
 (global-set-key (potion-emacs/kbd "s-<enter>") 'execute-extended-command)                                          ;; Lets you run an Emacs function
 (global-set-key (potion-emacs/kbd "s-]") 'potion-emacs/indent-region)                                              ;; Indents the highlighted region
 (global-set-key (potion-emacs/kbd "s-[") 'potion-emacs/outdent-region)                                             ;; Outdents the highlighted region
-(global-set-key (potion-emacs/kbd "s-f") 'occur)                                                                   ;; Search regex match in current file
-(global-set-key (potion-emacs/kbd "s-F") 'rgrep)                                                                   ;; Start an Emacs rgrep process (choose directory/filename)
+(global-set-key (potion-emacs/kbd "s-f") 'rg-dwim-current-file)                                                    ;; Ripgrep search in current file
+(global-set-key (potion-emacs/kbd "s-F") 'rg-project)                                                              ;; Ripgrep search in current project
 (global-set-key (potion-emacs/kbd "s-r") 'potion-emacs/replace)                                                    ;; Replace currently searched regex
 (global-set-key (potion-emacs/kbd "s-w") 'potion-emacs/close-tab-or-window)                                        ;; Close the current tab or window
 (global-set-key (potion-emacs/kbd "s-q") 'potion-emacs/kill-emacs)                                                 ;; Just quit Emacs

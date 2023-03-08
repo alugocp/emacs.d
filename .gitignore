@@ -4,4 +4,4 @@
 /transient
 /init.el
 /*.eld
-/elpa/*
+/elpa
