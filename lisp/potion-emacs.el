@@ -47,6 +47,7 @@
 (setq initial-scratch-message ";; Hello, world!")           ;; Set default buffer message
 (setq mouse-wheel-tilt-scroll t)                            ;; Allows you to scroll horizontally
 (setq mouse-wheel-flip-direction 1)                         ;; Sets my preferred mouse pad scrolling direction
+(setq-default mode-require-final-newline nil)               ;; Don't add newline to end of buffers
 (setq-default indent-tabs-mode nil)                         ;; Don't use tabs for indentation
 (setq-default truncate-lines 1)                             ;; Won't wrap long lines
 (setq-default electric-indent-inhibit t)                    ;; Don't indent current line on RET
