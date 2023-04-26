@@ -25,14 +25,19 @@
 ;; Customizable values
 (defcustom potion-emacs/initial-tab-width 2
   "The initial tab width to set when opening this editor")
+
 (defcustom potion-emacs/initial-screen-width 150
   "The initial screen width to set when opening this editor")
+
 (defcustom potion-emacs/initial-screen-height 50
   "The initial screen height to set when opening this editor")
+
 (defcustom potion-emacs/command-key "C"
   "The key to be used in place of CMD for keybindings")
+
 (defcustom potion-emacs/terminal "/bin/zsh"
   "The terminal command to be run by Emacs")
+
 (defcustom potion-emacs/indentation-variables '()
   "A list of indentation variables to keep in sync")
 
@@ -301,6 +306,7 @@
 (global-set-key (potion-emacs/kbd "s-o") 'find-file)                                                               ;; Open file
 (global-set-key (potion-emacs/kbd "s-t") 'potion-emacs/open-empty-buffer)                                          ;; Open empty buffer
 (global-set-key (potion-emacs/kbd "s-i") 'potion-emacs/set-indent-level)                                           ;; Sets indentation width
+(global-set-key (potion-emacs/kbd "s-I") 'indent-region)                                                           ;; Reindents the selected region
 (global-set-key (potion-emacs/kbd "s-a") 'potion-emacs/select-all)                                                 ;; Selects the entire buffer
 (global-set-key (potion-emacs/kbd "s-z") 'undo)                                                                    ;; Undo an action
 (global-set-key (potion-emacs/kbd "s-Z") 'redo)                                                                    ;; Redo an action

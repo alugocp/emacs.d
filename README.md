@@ -56,6 +56,7 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 |CMD + O|open a file|
 |CMD + T|create new empty buffer|
 |CMD + I|set indent width|
+|CMD + SHIFT + I|reindents the currently selected region|
 |CMD + A|highlight entire buffer|
 |CMD + Z|undo|
 |CMD + SHIFT + Z|redo|
@@ -72,4 +73,5 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 - `potion-emacs/initial-screen-width`: The initial screen width to set when opening this editor (default `150`)
 - `potion-emacs/initial-screen-height`: The initial screen height to set when opening this editor (default `50`)
 - `potion-emacs/command-key`: The key to be used in place of CMD for keybindings (default `"C"`)
+- `potion-emacs/terminal`: The terminal command to be run by Emacs (default `"/bin/zsh"`)
 - `potion-emacs/indentation-variables`: A list of indentation variables to keep in sync (default `'()`)

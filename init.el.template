@@ -9,5 +9,6 @@
   typescript-indent-level
   lisp-indent-level
   js-indent-level
+  c-basic-offset
 ))
 (require 'potion-emacs)
