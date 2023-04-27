@@ -74,6 +74,7 @@
 
 ;; Word redefinition
 (defun potion-emacs/same-char-class (a b)
+    "Returns true if the given characters exist in the same character class (or if neither of them exist in any explicitly defined class)"
     (setq alphabet_class '("A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"))
     (setq number_class '("0" "1" "2" "3" "4" "5" "6" "7" "8" "9"))
     (setq space_class '(" " "	"))
@@ -84,14 +85,32 @@
             (if (member a space_class) (member b space_class)
                 (if (member a newline_class) (member b newline_class)
                     (not (member b all_classes)))))))
+
 (defun potion-emacs/forward-word ()
+    "Implementation of forward-word based on a custom word definition"
     (interactive)
     (setq first (string (following-char)))
     (while (potion-emacs/same-char-class first (string (following-char))) (forward-char)))
+
 (defun potion-emacs/backward-word ()
+    "Implementation of backward-word based on a custom word definition"
     (interactive)
     (setq first (string (preceding-char)))
     (while (potion-emacs/same-char-class first (string (preceding-char))) (backward-char)))
+
+(defun potion-emacs/forward-word-shift ()
+    "Version of potion-emacs/forward-word that activates a region"
+    (interactive)
+    (if (not (region-active-p)) (set-mark (point)))
+    (setq transient-mark-mode (cons 'only transient-mark-mode))
+    (command-execute 'potion-emacs/forward-word))
+
+(defun potion-emacs/backward-word-shift ()
+    "Version of potion-emacs/backward-word that activates a region"
+    (interactive)
+    (if (not (region-active-p)) (set-mark (point)))
+    (setq transient-mark-mode (cons 'only transient-mark-mode))
+    (command-execute 'potion-emacs/backward-word))
 
 ;; Use the MELPA package archive to install necessary packages
 (require 'package)
@@ -350,6 +369,8 @@
 (global-set-key (potion-emacs/kbd "<tab>") 'tab-to-tab-stop)                                                       ;; Tab adds a couple spaces
 (global-set-key (kbd "M-<right>") 'potion-emacs/forward-word)                                                      ;; forward-word alternative with custom word definition
 (global-set-key (kbd "M-<left>") 'potion-emacs/backward-word)                                                      ;; backward-word alternative with custom word definition
+(global-set-key (kbd "M-S-<right>") 'potion-emacs/forward-word-shift)                                              ;; forward-word alternative with custom word definition and highlight region
+(global-set-key (kbd "M-S-<left>") 'potion-emacs/backward-word-shift)                                              ;; backward-word alternative with custom word definition and highlight region
 
 ;; Okay we're done now
 (potion-emacs/set-indentation-width potion-emacs/initial-tab-width)
