@@ -120,7 +120,7 @@
   typescript-mode ;; TypeScript syntax highlighting
   rust-mode       ;; Rust syntax highlighting
   diff-hl         ;; Show line changes in fringe
-  neotree         ;; File tree viewer
+  sr-speedbar     ;; File tree viewer
   magit           ;; Git support
   rg              ;; Ripgrep file search wrapper for Elisp
 ))
@@ -152,7 +152,6 @@
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh) ;; Syncs diff-hl and magit
 (global-diff-hl-mode)                                           ;; Use fringe to show edited lines
-(neotree-toggle)                                                ;; Activates the file tree viewer by default
 
 ;; Miscellaneous hooks
 (add-hook 'emacs-startup-hook (lambda ()
@@ -353,8 +352,7 @@
 (global-set-key (potion-emacs/kbd "s-x") 'kill-region)                                                             ;; Cut
 (global-set-key (potion-emacs/kbd "s-c") 'kill-ring-save)                                                          ;; Copy
 (global-set-key (potion-emacs/kbd "s-v") 'yank)                                                                    ;; Paste
-(global-set-key (potion-emacs/kbd "s-|") 'neotree-toggle)                                                          ;; Toggles the project tree viewer
-(global-set-key (potion-emacs/kbd "s-/") 'neotree-dir)                                                             ;; Changes the root directory of project tree viewer
+(global-set-key (potion-emacs/kbd "s-|") 'sr-speedbar-toggle)                                                      ;; Toggles the project tree viewer
 (global-set-key (potion-emacs/kbd "s-1") (lambda () (interactive) (potion-emacs/global-tab-switch 0)))             ;; Switch to tab 1
 (global-set-key (potion-emacs/kbd "s-2") (lambda () (interactive) (potion-emacs/global-tab-switch 1)))             ;; Switch to tab 2
 (global-set-key (potion-emacs/kbd "s-3") (lambda () (interactive) (potion-emacs/global-tab-switch 2)))             ;; Switch to tab 3

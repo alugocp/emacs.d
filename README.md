@@ -64,7 +64,6 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 |CMD + C|copy|
 |CMD + V|paste|
 |CMD + \||toggle project tree|
-|CMD + /|set root directory for project tree|
 |CMD + \<1 - 8\>|skip to *nth* tab in editor|
 |CMD + 9|skip to the last tab in the editor|
 
