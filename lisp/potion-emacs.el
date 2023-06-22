@@ -131,22 +131,25 @@
     (package-install pkg)))
 
 ;; Changes diff-hl colors
-(defun potion-emacs/reset-hl-colors (diff-hl-dir)
-    (setq file (concat diff-hl-dir "/diff-hl.el"))
-    (setq contents (with-temp-buffer
-        (insert-file-contents file)
-        (buffer-string)))
-    (setq contents (replace-regexp-in-string "'\(\(default :inherit diff-added\)\n    \(\(\(class color\)\) :foreground \"green4\"\)\)" "'((((class color)) :background \"#00ff00\"))" contents))
-    (setq contents (replace-regexp-in-string "'\(\(default :inherit diff-removed\)\n    \(\(\(class color\)\) :foreground \"red3\"\)\)" "'((((class color)) :background \"#ff0000\"))" contents))
-    (setq contents (replace-regexp-in-string "'\(\(default :foreground \"blue3\"\)\n    \(\(\(class color\) \(min-colors 88\) \(background light\)\)\n     :background \"#ddddff\"\)\n    \(\(\(class color\) \(min-colors 88\) \(background dark\)\)\n     :background \"#333355\"\)\)" "'((((class color)) :background \"#ffff00\"))" contents))
-    (with-temp-buffer
-        (insert contents)
-        (when (file-writable-p file)
-            (write-region (point-min)
-                (point-max)
-                file)))
-    (byte-recompile-directory diff-hl-dir 0))
-(potion-emacs/reset-hl-colors (nth 0 (file-expand-wildcards "~/.emacs.d/elpa/diff-hl-*")))
+(defface potion-emacs/diff-hl-insert
+    '((((class color)) :background "#00ff00"))
+    "My own insert face to override diff-hl-insert.")
+
+(defface potion-emacs/diff-hl-delete
+    '((((class color)) :background "#ff0000"))
+    "My own delete face to override diff-hl-delete.")
+
+(defface potion-emacs/diff-hl-change
+    '((((class color)) :background "#ffff00"))
+    "My own change face to override diff-hl-change.")
+
+(defun potion-emacs/diff-hl-face-remap ()
+    "Remap function for diff-hl faces"
+    (face-remap-add-relative 'diff-hl-insert 'potion-emacs/diff-hl-insert)
+    (face-remap-add-relative 'diff-hl-delete 'potion-emacs/diff-hl-delete)
+    (face-remap-add-relative 'diff-hl-change 'potion-emacs/diff-hl-change))
+
+(advice-add 'diff-hl-changes :after #'potion-emacs/diff-hl-face-remap)
 
 ;; Package integration setup
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
