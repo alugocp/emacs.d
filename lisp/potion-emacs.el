@@ -58,6 +58,7 @@
 (setq-default electric-indent-inhibit t)                    ;; Don't indent current line on RET
 (setq-default case-fold-search nil)                         ;; Makes occur case sensitive
 (custom-set-variables '(speedbar-show-unknown-files t))     ;; Show unknown files in Speedbar file explorer
+(setq speedbar-directory-unshown-regexp "^\\(\\.\\.?\\)$")  ;; Show hidden files in Speedbar file explorer
 (setq-default tab-line-tabs-function                        ;; Keeps our tab order consistent
   (lambda () (sort (tab-line-tabs-window-buffers)
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
@@ -134,15 +135,15 @@
 
 ;; Changes diff-hl colors
 (defface potion-emacs/diff-hl-insert
-    '((((class color)) :background "#00ff00"))
+    '((((class color)) :background "forestgreen"))
     "My own insert face to override diff-hl-insert.")
 
 (defface potion-emacs/diff-hl-delete
-    '((((class color)) :background "#ff0000"))
+    '((((class color)) :background "indianred"))
     "My own delete face to override diff-hl-delete.")
 
 (defface potion-emacs/diff-hl-change
-    '((((class color)) :background "#ffff00"))
+    '((((class color)) :background "cornsilk"))
     "My own change face to override diff-hl-change.")
 
 (defun potion-emacs/diff-hl-face-remap ()
