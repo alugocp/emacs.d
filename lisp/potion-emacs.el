@@ -337,6 +337,18 @@
     (goto-char (mark))
     (deactivate-mark))
 
+(defun potion-emacs/increase-speedbar ()
+    "Increases the width of the speedbar window"
+    (interactive)
+    (if (sr-speedbar-exist-p)
+        (window-resize sr-speedbar-window 1 t)))
+
+(defun potion-emacs/decrease-speedbar ()
+    "Decreases the width of the speedbar window"
+    (interactive)
+    (if (sr-speedbar-exist-p)
+        (window-resize sr-speedbar-window -1 t)))
+
 ;; Key bindings
 (global-set-key (potion-emacs/kbd "s-S-<left>") (lambda () (interactive) (potion-emacs/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
 (global-set-key (potion-emacs/kbd "s-<left>") (lambda () (interactive) (potion-emacs/move-beginning-of-line nil))) ;; CMD + left moves to beginning of line
@@ -381,6 +393,8 @@
 (global-set-key (potion-emacs/kbd "S-<backspace>") 'potion-emacs/delete-forward-char)                              ;; Forwards delete command which handles space tabs
 (global-set-key (potion-emacs/kbd "<escape>") 'keyboard-escape-quit)                                               ;; You can use escape key to quit command line
 (global-set-key (potion-emacs/kbd "<tab>") 'tab-to-tab-stop)                                                       ;; Tab adds a couple spaces
+(global-set-key (potion-emacs/kbd "s-:") 'potion-emacs/increase-speedbar)                                          ;; Increases the width of the speedbar window
+(global-set-key (potion-emacs/kbd "s-\"") 'potion-emacs/decrease-speedbar)                                         ;; Decreases the width of the speedbar window
 (global-set-key (kbd "M-<right>") 'potion-emacs/forward-word)                                                      ;; forward-word alternative with custom word definition
 (global-set-key (kbd "M-<left>") 'potion-emacs/backward-word)                                                      ;; backward-word alternative with custom word definition
 (global-set-key (kbd "M-S-<right>") 'potion-emacs/forward-word-shift)                                              ;; forward-word alternative with custom word definition and highlight region

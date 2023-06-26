@@ -59,6 +59,8 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 |CMD + I|set indent width|
 |CMD + SHIFT + I|reindents the currently selected region|
 |CMD + A|highlight entire buffer|
+|CMD + SHIFT + :|increases the file explorer width|
+|CMD + SHIFT + "|decreases the file explorer width|
 |CMD + Z|undo|
 |CMD + SHIFT + Z|redo|
 |CMD + X|cut|
