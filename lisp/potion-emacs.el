@@ -57,6 +57,7 @@
 (setq-default truncate-lines 1)                             ;; Won't wrap long lines
 (setq-default electric-indent-inhibit t)                    ;; Don't indent current line on RET
 (setq-default case-fold-search nil)                         ;; Makes occur case sensitive
+(custom-set-variables '(speedbar-show-unknown-files t))     ;; Show unknown files in Speedbar file explorer
 (setq-default tab-line-tabs-function                        ;; Keeps our tab order consistent
   (lambda () (sort (tab-line-tabs-window-buffers)
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
