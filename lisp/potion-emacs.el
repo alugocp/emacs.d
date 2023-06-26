@@ -119,6 +119,7 @@
 (package-initialize)
 (setq packages '(
   typescript-mode ;; TypeScript syntax highlighting
+  markdown-mode   ;; Markdown syntax highlighting
   rust-mode       ;; Rust syntax highlighting
   diff-hl         ;; Show line changes in fringe
   sr-speedbar     ;; File tree viewer

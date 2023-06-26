@@ -27,10 +27,12 @@ You will also need to install the following command-line tools:
 
 - [redo+](https://www.emacswiki.org/emacs/RedoPlus) makes it easier to undo/redo actions
 - [typescript-mode](https://melpa.org/#/typescript-mode) adds TypeScript support
-- [fuzzy-finder](https://melpa.org/#/fuzzy-finder) allows you to search the project for text and maybe replace it
+- [markdown-mode](https://melpa.org/#/markdown-mode) adds markdown file support
+- [rust-mode](https://melpa.org/#/rust-mode) adds Rust support
 - [diff-hl](https://melpa.org/#/diff-hl) highlights the gutter next to lines with uncommitted changes
-- [neotree](https://melpa.org/#/neotree) powers the project viewer
+- [sr-speedbar](https://www.emacswiki.org/emacs/SrSpeedbar) is a file explorer
 - [magit](https://melpa.org/#/magit) provides some git support
+- [rg](https://melpa.org/#/rg) helps with text search
 
 ### Keybindings
 Potion Emacs allows you to replace the `CMD` key in these keybindings with another key.
