@@ -37,6 +37,7 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 
 |Keys|Function|
 |---|---|
+|SHIFT + DELETE|forward delete|
 |CMD + LEFT|skip to beginning of line|
 |CMD + RIGHT|skip to end of line|
 |CMD + UP|skip to beginning of buffer|

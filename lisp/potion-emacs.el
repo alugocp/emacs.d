@@ -158,16 +158,9 @@
 (global-diff-hl-mode)                                           ;; Use fringe to show edited lines
 
 ;; Miscellaneous hooks
-(add-hook 'emacs-startup-hook (lambda ()
-      (when (get-buffer "*scratch*")
-        (progn
-          (kill-buffer "*scratch*")
-          (delete-window))
-          (when (member "*Messages*" (mapcar (lambda (a) (buffer-name a)) (funcall tab-line-tabs-function)))
-              (progn
-                  (potion-emacs/open-empty-buffer)
-                  (kill-buffer "*Messages*"))))))
 (advice-add 'kill-ring-save :after (lambda (&rest _) (setq deactivate-mark nil)))
+(add-hook 'emacs-startup-hook (lambda ()
+    (sr-speedbar-open)))
 
 ;; Custom function definitions
 
@@ -203,7 +196,9 @@
   "Opens a new, empty buffer"
   (interactive)
   (switch-to-buffer (get-buffer-create "*scratch*"))
+  (erase-buffer)
   (insert initial-scratch-message)
+  (rename-buffer "new file" 1)
   (lisp-interaction-mode))
 
 (defun potion-emacs/indent-region ()
@@ -282,6 +277,21 @@
                     (delete-backward-char 1))))
         (delete-backward-char 1)))
 
+(defun potion-emacs/delete-forward-char ()
+    "Deletes up to the tab width if you're only deleting space marks"
+    (interactive)
+    (if (and (<= (point) (- (point-max) tab-width)) (string= " " (string (following-char))))
+        (progn
+            (forward-char)
+            (if (string= " " (string (following-char)))
+                (progn
+                    (backward-char)
+                    (delete-forward-char tab-width))
+                (progn
+                    (backward-char)
+                    (delete-forward-char 1))))
+        (delete-forward-char 1)))
+
 (defun potion-emacs/set-indentation-width (n)
   "Sets the editor's indentation width"
   (dolist (variable potion-emacs/indentation-variables) (set-default variable n)))
@@ -313,7 +323,8 @@
 (defun potion-emacs/open-terminal ()
     "Opens a pretty terminal tab with no configuration needed"
     (interactive)
-    (ansi-term potion-emacs/terminal))
+    (ansi-term potion-emacs/terminal)
+    (rename-buffer "terminal" 1))
 
 (defun potion-emacs/replace ()
     "Replaces currently searched regex"
@@ -367,6 +378,7 @@
 (global-set-key (potion-emacs/kbd "s-8") (lambda () (interactive) (potion-emacs/global-tab-switch 7)))             ;; Switch to tab 8
 (global-set-key (potion-emacs/kbd "s-9") 'potion-emacs/final-tab-switch)                                           ;; Switch to last tab
 (global-set-key (potion-emacs/kbd "<backspace>") 'potion-emacs/delete-backward-char)                               ;; Overrides backspace to handle space tabs
+(global-set-key (potion-emacs/kbd "S-<backspace>") 'potion-emacs/delete-forward-char)                              ;; Forwards delete command which handles space tabs
 (global-set-key (potion-emacs/kbd "<escape>") 'keyboard-escape-quit)                                               ;; You can use escape key to quit command line
 (global-set-key (potion-emacs/kbd "<tab>") 'tab-to-tab-stop)                                                       ;; Tab adds a couple spaces
 (global-set-key (kbd "M-<right>") 'potion-emacs/forward-word)                                                      ;; forward-word alternative with custom word definition
