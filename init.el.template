@@ -12,3 +12,5 @@
   c-basic-offset
 ))
 (require 'potion-emacs)
+(require 'billw-theme)
+(add-hook 'after-init-hook (lambda () (load-theme 'billw)))

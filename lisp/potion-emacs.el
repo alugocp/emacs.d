@@ -1,7 +1,9 @@
-;; Boost GC threshold to minimize lag during startup
-(setq gc-cons-threshold most-positive-fixnum)
+;; Add auxiliary script load path
+(add-to-list 'load-path "~/.emacs.d/lisp/lib")
 
-;; Lower runtime GC threshold to 8 MB after startup (default is 800kB)
+;; Boost GC threshold to minimize lag during startup, then lower
+;; runtime GC threshold to 8 MB after startup (default is 800kB)
+(setq gc-cons-threshold most-positive-fixnum)
 (add-hook 'emacs-startup-hook (lambda () (setq gc-cons-threshold (expt 2 23))))
 
 ;; Prevent new buffers from opening in windows (split screen views)
@@ -9,13 +11,9 @@
     (setq-default pop-up-windows nil)
     (setq-default pop-up-frames nil)))
 
-;; Include dependencies
+;; Include dependencies (lazy loading)
 (autoload 'redo "redo+" "Redo the last undone change" t)
 (autoload 'undo "redo+" "Undo the last change" t)
-
-;; Set the UI style
-(require 'billw-theme)
-(add-hook 'after-init-hook (lambda () (load-theme 'billw)))
 
 ;; Important header values
 (defun potion-emacs/stdout (msg)
@@ -41,6 +39,17 @@
 (defcustom potion-emacs/indentation-variables '()
   "A list of indentation variables to keep in sync")
 
+;; Bundled packages
+(setq potion-emacs/packages '(
+  typescript-mode ;; TypeScript syntax highlighting
+  markdown-mode   ;; Markdown syntax highlighting
+  rust-mode       ;; Rust syntax highlighting
+  diff-hl         ;; Show line changes in fringe
+  sr-speedbar     ;; File tree viewer
+  magit           ;; Git support
+  rg              ;; Ripgrep file search wrapper for Elisp
+))
+
 ;; Miscellaneous variables
 (setq potion-emacs/main-window (selected-window))           ;; Keep track of the "main" window
 (setq backup-inhibited t)                                   ;; Don't create file backups
@@ -64,7 +73,7 @@
     (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
 
 ;; Modal function calls
-(global-display-line-numbers-mode)            ;; Show line numbers
+(global-display-line-numbers-mode 1)          ;; Show line numbers
 (set-face-attribute 'default nil :height 150) ;; Zoom the text in a little
 (delete-selection-mode)                       ;; Delete selected text on new character
 (global-tab-line-mode)                        ;; Incorporates tabs onto the editor
@@ -114,24 +123,19 @@
     (setq transient-mark-mode (cons 'only transient-mark-mode))
     (command-execute 'potion-emacs/backward-word))
 
-;; Use the MELPA package archive to install necessary packages
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-(setq packages '(
-  typescript-mode ;; TypeScript syntax highlighting
-  markdown-mode   ;; Markdown syntax highlighting
-  rust-mode       ;; Rust syntax highlighting
-  diff-hl         ;; Show line changes in fringe
-  sr-speedbar     ;; File tree viewer
-  magit           ;; Git support
-  rg              ;; Ripgrep file search wrapper for Elisp
-))
-(unless package-archive-contents
-  (package-refresh-contents))
-(dolist (pkg packages)
-  (unless (package-installed-p pkg)
-    (package-install pkg)))
+(defun potion-emacs/update ()
+    "Use the MELPA package archive to install/update necessary packages"
+    (interactive)
+    (message "Updating packages via MELPA...")
+    (require 'package)
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+    (package-initialize)
+    (unless package-archive-contents
+      (package-refresh-contents))
+    (dolist (pkg potion-emacs/packages)
+      (unless (package-installed-p pkg)
+        (package-install pkg)))
+    (message "Packages were updated!"))
 
 ;; Changes diff-hl colors
 (defface potion-emacs/diff-hl-insert
@@ -381,6 +385,7 @@
 (global-set-key (potion-emacs/kbd "s-x") 'kill-region)                                                             ;; Cut
 (global-set-key (potion-emacs/kbd "s-c") 'kill-ring-save)                                                          ;; Copy
 (global-set-key (potion-emacs/kbd "s-v") 'yank)                                                                    ;; Paste
+(global-set-key (potion-emacs/kbd "s-u") 'potion-emacs/update)                                                     ;; Update plugins
 (global-set-key (potion-emacs/kbd "s-|") 'sr-speedbar-toggle)                                                      ;; Toggles the project tree viewer
 (global-set-key (potion-emacs/kbd "s-1") (lambda () (interactive) (potion-emacs/global-tab-switch 0)))             ;; Switch to tab 1
 (global-set-key (potion-emacs/kbd "s-2") (lambda () (interactive) (potion-emacs/global-tab-switch 1)))             ;; Switch to tab 2
