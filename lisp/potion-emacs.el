@@ -36,18 +36,20 @@
 (defcustom potion-emacs/terminal "/bin/zsh"
   "The terminal command to be run by Emacs")
 
-(defcustom potion-emacs/indentation-variables '()
-  "A list of indentation variables to keep in sync")
-
 ;; Bundled packages
 (setq potion-emacs/packages '(
-  typescript-mode ;; TypeScript syntax highlighting
-  markdown-mode   ;; Markdown syntax highlighting
-  rust-mode       ;; Rust syntax highlighting
   diff-hl         ;; Show line changes in fringe
   sr-speedbar     ;; File tree viewer
   magit           ;; Git support
   rg              ;; Ripgrep file search wrapper for Elisp
+))
+
+;; Indentation management
+(setq potion-emacs/indentation-variables '(
+    tab-width
+    lisp-indent-level
+    js-indent-level
+    c-basic-offset
 ))
 
 ;; Miscellaneous variables
@@ -354,6 +356,11 @@
     (interactive)
     (if (sr-speedbar-exist-p)
         (window-resize sr-speedbar-window -1 t)))
+
+(defun potion-emacs/register-syntax (pkg &optional indent)
+    (setq potion-emacs/packages (add-to-list 'potion-emacs/packages pkg))
+    (if indent
+        (setq potion-emacs/indentation-variables (add-to-list 'potion-emacs/indentation-variables indent))))
 
 ;; Key bindings
 (global-set-key (potion-emacs/kbd "s-S-<left>") (lambda () (interactive) (potion-emacs/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line

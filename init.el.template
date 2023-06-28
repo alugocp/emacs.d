@@ -1,16 +1,17 @@
+;; Setup Potion Emacs
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (setq potion-emacs/initial-tab-width 2)
 (setq potion-emacs/initial-screen-width 150)
 (setq potion-emacs/initial-screen-height 50)
 (setq potion-emacs/command-key "C")
 (setq potion-emacs/terminal "/bin/zsh")
-(setq potion-emacs/indentation-variables '(
-  tab-width
-  typescript-indent-level
-  lisp-indent-level
-  js-indent-level
-  c-basic-offset
-))
 (require 'potion-emacs)
+
+;; Set theme
 (require 'billw-theme)
 (add-hook 'after-init-hook (lambda () (load-theme 'billw)))
+
+;; Register syntax libraries
+(potion-emacs/register-syntax typescript-mode typescript-indent-level)
+(potion-emacs/register-syntax markdown-mode)
+(potion-emacs/register-syntax rust-mode)
