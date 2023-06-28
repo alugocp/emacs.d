@@ -160,6 +160,20 @@
 
 (advice-add 'diff-hl-changes :after #'potion-emacs/diff-hl-face-remap)
 
+;; Renames *SPEEDBAR* and removes other tabs in that window
+(defun potion-emacs/rename-new-buffer-speedbar ()
+    (setq sr-speedbar-buffer-name "file viewer"))
+
+(defun potion-emacs/drop-extra-buffers ()
+    (setq previous (selected-window))
+    (sr-speedbar-select-window)
+    (set-window-prev-buffers (selected-window) nil)
+    (set-window-next-buffers (selected-window) nil)
+    (select-window previous))
+
+(advice-add 'sr-speedbar-open :before #'potion-emacs/rename-new-buffer-speedbar)
+(advice-add 'sr-speedbar-open :after #'potion-emacs/drop-extra-buffers)
+
 ;; Package integration setup
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh) ;; Syncs diff-hl and magit
@@ -206,7 +220,6 @@
   (switch-to-buffer (get-buffer-create "*scratch*"))
   (erase-buffer)
   (insert initial-scratch-message)
-  (rename-buffer "new file" 1)
   (lisp-interaction-mode))
 
 (defun potion-emacs/indent-region ()
