@@ -74,8 +74,11 @@
 (setq tab-line-close-button-show nil)                       ;; Hide the close tab buttons
 (setq tab-line-separator "")                                ;; Hide the tab separators
 (setq speedbar-use-images nil)                              ;; Don't use image icons in Speedbar
+(setq desktop-save t)                                       ;; Automatically save desktop on quit
+(setq desktop-path (list "/tmp"))                           ;; Sets where to save the desktop file
 
 ;; Modal function calls
+(desktop-save-mode 1)                         ;; Restores the previous session on startup
 (global-hl-line-mode)                         ;; Highlight the current line
 (global-display-line-numbers-mode 1)          ;; Show line numbers
 (set-face-attribute 'default nil :height 150) ;; Zoom the text in a little
