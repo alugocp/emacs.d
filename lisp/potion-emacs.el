@@ -78,6 +78,7 @@
 (setq desktop-path (list "/tmp"))                           ;; Sets where to save the desktop file
 
 ;; Modal function calls
+(scroll-bar-mode -1)                          ;; Hide scroll bars because it's prettier
 (desktop-save-mode 1)                         ;; Restores the previous session on startup
 (global-hl-line-mode)                         ;; Highlight the current line
 (global-display-line-numbers-mode 1)          ;; Show line numbers
@@ -216,7 +217,13 @@
   (set-face-attribute 'speedbar-tag-face nil :foreground "#696e92")
   (set-face-attribute 'speedbar-selected-face nil :foreground "#f9b529" :underline nil)
   (set-face-attribute 'speedbar-highlight-face nil :foreground "#a9dc69" :background 'unspecified)
-  (set-face-attribute 'speedbar-separator-face nil :foreground "#696e92"))
+  (set-face-attribute 'speedbar-separator-face nil :foreground "#696e92")
+
+  ;; Also remove line numbers from Speedbar
+  (setq previous (selected-window))
+  (sr-speedbar-select-window)
+  (display-line-numbers-mode -1)
+  (select-window previous))
 
 (advice-add 'sr-speedbar-open :after #'potion-emacs/recolor-speedbar)
 
