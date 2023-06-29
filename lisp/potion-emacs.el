@@ -70,9 +70,9 @@
 (setq-default case-fold-search nil)                         ;; Makes occur case sensitive
 (custom-set-variables '(speedbar-show-unknown-files t))     ;; Show unknown files in Speedbar file explorer
 (setq speedbar-directory-unshown-regexp "^\\(\\.\\.?\\)$")  ;; Show hidden files in Speedbar file explorer
-(setq-default tab-line-tabs-function                        ;; Keeps our tab order consistent
-  (lambda () (sort (tab-line-tabs-window-buffers)
-    (lambda (a b) (string< (buffer-name a) (buffer-name b))))))
+(setq tab-line-new-button-show nil)                         ;; Hide the add tab button
+(setq tab-line-close-button-show nil)                       ;; Hide the close tab buttons
+(setq tab-line-separator "")                                ;; Hide the tab separators
 
 ;; Modal function calls
 (global-display-line-numbers-mode 1)          ;; Show line numbers
@@ -206,11 +206,10 @@
   "Switch the viewer to the nth tab"
   (setq buffers (funcall tab-line-tabs-function))
   (if (< n (length buffers))
-    (switch-to-buffer (nth n (mapcar #'buffer-name buffers)))
-    nil))
+    (tab-line-select-tab-buffer (nth n buffers) (selected-window))))
 
 (defun potion-emacs/final-tab-switch ()
-  "Swith the viewer to the last tab"
+  "Switch the viewer to the last tab"
   (interactive)
   (potion-emacs/global-tab-switch (- (length (funcall tab-line-tabs-function)) 1)))
 
