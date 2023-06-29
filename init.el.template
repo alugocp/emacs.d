@@ -8,10 +8,11 @@
 (require 'potion-emacs)
 
 ;; Set theme
-(require 'billw-theme)
-(add-hook 'after-init-hook (lambda () (load-theme 'billw)))
+(setq subatomic-more-visible-comment-delimiters 1)
+(require 'subatomic-theme)
+(add-hook 'after-init-hook (lambda () (load-theme 'subatomic)))
 
 ;; Register syntax libraries
-(potion-emacs/register-syntax typescript-mode typescript-indent-level)
-(potion-emacs/register-syntax markdown-mode)
-(potion-emacs/register-syntax rust-mode)
+(potion-emacs/register-syntax 'typescript-mode 'typescript-indent-level)
+(potion-emacs/register-syntax 'markdown-mode)
+(potion-emacs/register-syntax 'rust-mode)

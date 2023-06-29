@@ -75,6 +75,7 @@
 (setq tab-line-separator "")                                ;; Hide the tab separators
 
 ;; Modal function calls
+(global-hl-line-mode)                         ;; Highlight the current line
 (global-display-line-numbers-mode 1)          ;; Show line numbers
 (set-face-attribute 'default nil :height 150) ;; Zoom the text in a little
 (delete-selection-mode)                       ;; Delete selected text on new character
@@ -173,6 +174,29 @@
 
 (advice-add 'sr-speedbar-open :before #'potion-emacs/rename-new-buffer-speedbar)
 (advice-add 'sr-speedbar-open :after #'potion-emacs/drop-extra-buffers)
+
+;; Visual tab customization
+(defun potion-emacs/tab-line-tab-name-function (buffer &optional _buffers)
+  (format " %s " (buffer-name buffer)))
+
+(setq tab-line-tab-name-function #'potion-emacs/tab-line-tab-name-function)
+
+(set-face-attribute 'tab-line nil
+      :background "#3d3d3d"
+      :height 1.0 :box nil)
+
+(set-face-attribute 'tab-line-tab nil
+      :inherit 'tab-line
+      :background "#000000" :foreground "#ffffff")
+
+(set-face-attribute 'tab-line-tab-current nil
+      :background "#1389d6" :foreground "#ffffff")
+
+(set-face-attribute 'tab-line-tab-inactive nil
+      :background "#000000" :foreground "#ffffff")
+
+(set-face-attribute 'tab-line-highlight nil
+      :background "#68b8ed" :foreground "#ffffff")
 
 ;; Package integration setup
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
