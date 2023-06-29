@@ -73,6 +73,7 @@
 (setq tab-line-new-button-show nil)                         ;; Hide the add tab button
 (setq tab-line-close-button-show nil)                       ;; Hide the close tab buttons
 (setq tab-line-separator "")                                ;; Hide the tab separators
+(setq speedbar-use-images nil)                              ;; Don't use image icons in Speedbar
 
 ;; Modal function calls
 (global-hl-line-mode)                         ;; Highlight the current line
@@ -142,15 +143,15 @@
 
 ;; Changes diff-hl colors
 (defface potion-emacs/diff-hl-insert
-    '((((class color)) :background "forestgreen"))
+    '((((class color)) :background "#a9dc69"))
     "My own insert face to override diff-hl-insert.")
 
 (defface potion-emacs/diff-hl-delete
-    '((((class color)) :background "indianred"))
+    '((((class color)) :background "#ea8673"))
     "My own delete face to override diff-hl-delete.")
 
 (defface potion-emacs/diff-hl-change
-    '((((class color)) :background "cornsilk"))
+    '((((class color)) :background "#f9b529"))
     "My own change face to override diff-hl-change.")
 
 (defun potion-emacs/diff-hl-face-remap ()
@@ -182,26 +183,39 @@
 (setq tab-line-tab-name-function #'potion-emacs/tab-line-tab-name-function)
 
 (set-face-attribute 'tab-line nil
-      :background "#3d3d3d"
+      :background "#000000"
       :height 1.0 :box nil)
 
 (set-face-attribute 'tab-line-tab nil
       :inherit 'tab-line
-      :background "#000000" :foreground "#ffffff")
+      :background "#000000" :foreground "#696e92")
 
 (set-face-attribute 'tab-line-tab-current nil
-      :background "#1389d6" :foreground "#ffffff")
+      :background "#303347" :foreground "#f9b529")
 
 (set-face-attribute 'tab-line-tab-inactive nil
-      :background "#000000" :foreground "#ffffff")
+      :background "#000000" :foreground "#696e92")
 
 (set-face-attribute 'tab-line-highlight nil
-      :background "#68b8ed" :foreground "#ffffff")
+      :background "#303347" :foreground "#a9dc69")
 
 ;; Package integration setup
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh) ;; Syncs diff-hl and magit
 (global-diff-hl-mode)                                           ;; Use fringe to show edited lines
+
+;; Visual Speedbar customization
+(defun potion-emacs/recolor-speedbar ()
+  "Remap function for speedbar faces"
+  (set-face-attribute 'speedbar-button-face nil :foreground "#a9dc69")
+  (set-face-attribute 'speedbar-file-face nil :foreground "#ffffff")
+  (set-face-attribute 'speedbar-directory-face nil :foreground "#8aa6bc")
+  (set-face-attribute 'speedbar-tag-face nil :foreground "#696e92")
+  (set-face-attribute 'speedbar-selected-face nil :foreground "#f9b529" :underline nil)
+  (set-face-attribute 'speedbar-highlight-face nil :foreground "#a9dc69" :background 'unspecified)
+  (set-face-attribute 'speedbar-separator-face nil :foreground "#696e92"))
+
+(advice-add 'sr-speedbar-open :after #'potion-emacs/recolor-speedbar)
 
 ;; Miscellaneous hooks
 (advice-add 'kill-ring-save :after (lambda (&rest _) (setq deactivate-mark nil)))
