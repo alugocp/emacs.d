@@ -209,7 +209,8 @@
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh) ;; Syncs diff-hl and magit
 (if (fboundp 'global-diff-hl-mode)                              ;; Use fringe to show edited lines
-    (global-diff-hl-mode))
+    (global-diff-hl-mode)
+    (diff-hl-flydiff-mode))
 
 ;; Visual Speedbar customization
 (defun potion-emacs/recolor-speedbar ()
