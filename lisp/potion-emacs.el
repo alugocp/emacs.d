@@ -143,6 +143,8 @@
     (dolist (pkg potion-emacs/packages)
       (unless (package-installed-p pkg)
         (package-install pkg)))
+    (message "Reloading config...")
+    (load user-init-file)
     (message "Packages were updated!"))
 
 ;; Changes diff-hl colors
@@ -206,7 +208,8 @@
 ;; Package integration setup
 (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)   ;; Syncs diff-hl and magit
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh) ;; Syncs diff-hl and magit
-(global-diff-hl-mode)                                           ;; Use fringe to show edited lines
+(if (fboundp 'global-diff-hl-mode)                              ;; Use fringe to show edited lines
+    (global-diff-hl-mode))
 
 ;; Visual Speedbar customization
 (defun potion-emacs/recolor-speedbar ()
@@ -230,7 +233,8 @@
 ;; Miscellaneous hooks
 (advice-add 'kill-ring-save :after (lambda (&rest _) (setq deactivate-mark nil)))
 (add-hook 'emacs-startup-hook (lambda ()
-    (sr-speedbar-open)))
+    (if (fboundp 'sr-speedbar-open)
+        (sr-speedbar-open))))
 
 ;; Custom function definitions
 

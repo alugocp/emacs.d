@@ -1,6 +1,6 @@
 # Potion Emacs
 ![Verison](https://img.shields.io/badge/Version-1.0-blue)
-![Emacs](https://img.shields.io/badge/Support-Emacs%2027+-blueviolet)
+![Emacs](https://img.shields.io/badge/Supports-Emacs%2027+-blueviolet)
 
 Potion Emacs is a starter kit for those who miss Atom and who will never forgive VSCode.
 It knows what it did.
@@ -19,20 +19,22 @@ cp init.el.template init.el
 
 You will also need to install the following command-line tools:
 - [git](https://git-scm.com)
-- [fzf](https://github.com/junegunn/fzf)
+- [rg](https://github.com/BurntSushi/ripgrep)
 
 ## Features
 
 ### Included packages
 
 - [redo+](https://www.emacswiki.org/emacs/RedoPlus) makes it easier to undo/redo actions
-- [typescript-mode](https://melpa.org/#/typescript-mode) adds TypeScript support
-- [markdown-mode](https://melpa.org/#/markdown-mode) adds markdown file support
-- [rust-mode](https://melpa.org/#/rust-mode) adds Rust support
-- [diff-hl](https://melpa.org/#/diff-hl) highlights the gutter next to lines with uncommitted changes
-- [sr-speedbar](https://www.emacswiki.org/emacs/SrSpeedbar) is a file explorer
+- [sr-speedbar](https://www.emacswiki.org/emacs/SrSpeedbar) is a wrapper over Emac's Speedbar file explorer
+- [diff-hl](https://melpa.org/#/diff-hl) highlights the fringe next to lines with uncommitted changes
 - [magit](https://melpa.org/#/magit) provides some git support
 - [rg](https://melpa.org/#/rg) helps with text search
+
+#### Syntax support
+- [TypeScript](https://melpa.org/#/typescript-mode)
+- [Markdown](https://melpa.org/#/markdown-mode)
+- [Rust](https://melpa.org/#/rust-mode)
 
 ### Keybindings
 Potion Emacs allows you to replace the `CMD` key in these keybindings with another key.
@@ -79,4 +81,3 @@ Potion Emacs allows you to replace the `CMD` key in these keybindings with anoth
 - `potion-emacs/initial-screen-height`: The initial screen height to set when opening this editor (default `50`)
 - `potion-emacs/command-key`: The key to be used in place of CMD for keybindings (default `"C"`)
 - `potion-emacs/terminal`: The terminal command to be run by Emacs (default `"/bin/zsh"`)
-- `potion-emacs/indentation-variables`: A list of indentation variables to keep in sync (default `'()`)
