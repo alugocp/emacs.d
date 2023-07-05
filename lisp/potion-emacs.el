@@ -423,9 +423,16 @@
         (window-resize sr-speedbar-window -1 t)))
 
 (defun potion-emacs/register-syntax (pkg &optional indent)
+    "Registers a supported syntax highlighter library and optional indentation variable"
     (setq potion-emacs/packages (add-to-list 'potion-emacs/packages pkg))
     (if indent
         (setq potion-emacs/indentation-variables (add-to-list 'potion-emacs/indentation-variables indent))))
+
+(defun potion-emacs/exec-path-from-shell ()
+  "Sets up the Emacs exec path from your shell's PATH variable"
+  (setq path-from-shell (replace-regexp-in-string "[ \t\n]*$" "" (shell-command-to-string "$SHELL --login -c 'echo $PATH'")))
+  (setenv "PATH" path-from-shell)
+  (setq exec-path (split-string path-from-shell path-separator)))
 
 ;; Key bindings
 (global-set-key (potion-emacs/kbd "s-S-<left>") (lambda () (interactive) (potion-emacs/move-beginning-of-line 1))) ;; CMD + left moves to beginning of line
@@ -481,4 +488,5 @@
 
 ;; Okay we're done now
 (potion-emacs/set-indentation-width potion-emacs/initial-tab-width)
+(potion-emacs/exec-path-from-shell)
 (provide 'potion-emacs)
